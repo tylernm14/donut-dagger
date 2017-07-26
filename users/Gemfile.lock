@@ -1,0 +1,167 @@
+GIT
+  remote: git://github.com/tylernm14/sinatra_auth_github
+  revision: 471c127a36f08cc9efb2a51869ddb44c48ba64bd
+  specs:
+    sinatra_auth_github (1.2.0)
+      haml
+      sinatra (~> 2.0)
+      warden-github (~> 1.3)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    activemodel (4.2.9)
+      activesupport (= 4.2.9)
+      builder (~> 3.1)
+    activerecord (4.2.9)
+      activemodel (= 4.2.9)
+      activesupport (= 4.2.9)
+      arel (~> 6.0)
+    activesupport (4.2.9)
+      i18n (~> 0.7)
+      minitest (~> 5.1)
+      thread_safe (~> 0.3, >= 0.3.4)
+      tzinfo (~> 1.1)
+    addressable (2.5.1)
+      public_suffix (~> 2.0, >= 2.0.2)
+    arel (6.0.4)
+    backports (3.8.0)
+    builder (3.2.3)
+    coderay (1.1.1)
+    crack (0.4.3)
+      safe_yaml (~> 1.0.0)
+    diff-lcs (1.3)
+    docile (1.1.5)
+    dotenv (2.2.1)
+    factory_girl (4.8.0)
+      activesupport (>= 3.0.0)
+    faraday (0.12.2)
+      multipart-post (>= 1.2, < 3)
+    haml (5.0.1)
+      temple (>= 0.8.0)
+      tilt
+    hashdiff (0.3.4)
+    i18n (0.8.6)
+    json (2.1.0)
+    kgio (2.11.0)
+    method_source (0.8.2)
+    minitest (5.10.3)
+    multi_json (1.12.1)
+    multipart-post (2.0.0)
+    mustermann (1.0.0)
+    octokit (4.7.0)
+      sawyer (~> 0.8.0, >= 0.5.3)
+    pg (0.21.0)
+    pry (0.10.4)
+      coderay (~> 1.1.0)
+      method_source (~> 0.8.1)
+      slop (~> 3.4)
+    public_suffix (2.0.5)
+    rack (2.0.3)
+    rack-healthcheck (0.1.0)
+    rack-protection (2.0.0)
+      rack
+    rack-rewrite (1.5.1)
+    rack-test (0.7.0)
+      rack (>= 1.0, < 3)
+    racksh (1.0.0)
+      rack (>= 1.0)
+      rack-test (>= 0.5)
+    raindrops (0.18.0)
+    rake (12.0.0)
+    rspec (3.6.0)
+      rspec-core (~> 3.6.0)
+      rspec-expectations (~> 3.6.0)
+      rspec-mocks (~> 3.6.0)
+    rspec-core (3.6.0)
+      rspec-support (~> 3.6.0)
+    rspec-expectations (3.6.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.6.0)
+    rspec-mocks (3.6.0)
+      diff-lcs (>= 1.2.0, < 2.0)
+      rspec-support (~> 3.6.0)
+    rspec-support (3.6.0)
+    safe_yaml (1.0.4)
+    sawyer (0.8.1)
+      addressable (>= 2.3.5, < 2.6)
+      faraday (~> 0.8, < 1.0)
+    simplecov (0.14.1)
+      docile (~> 1.1.0)
+      json (>= 1.8, < 3)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.1)
+    sinatra (2.0.0)
+      mustermann (~> 1.0)
+      rack (~> 2.0)
+      rack-protection (= 2.0.0)
+      tilt (~> 2.0)
+    sinatra-activerecord (2.0.13)
+      activerecord (>= 3.2)
+      sinatra (>= 1.0)
+    sinatra-contrib (2.0.0)
+      backports (>= 2.0)
+      multi_json
+      mustermann (~> 1.0)
+      rack-protection (= 2.0.0)
+      sinatra (= 2.0.0)
+      tilt (>= 1.3, < 3)
+    sinatra-flash (0.3.0)
+      sinatra (>= 1.0.0)
+    sinatra-has_scope (0.1.0)
+    sinatra-initializers (0.1.4)
+    slop (3.6.0)
+    temple (0.8.0)
+    thread_safe (0.3.6)
+    tilt (2.0.8)
+    tzinfo (1.2.3)
+      thread_safe (~> 0.1)
+    unicorn (5.3.0)
+      kgio (~> 2.6)
+      raindrops (~> 0.7)
+    warden (1.2.7)
+      rack (>= 1.0)
+    warden-github (1.3.2)
+      activesupport (> 3.0)
+      octokit (> 2.1.0)
+      warden (> 1.0)
+    webmock (3.0.1)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff
+    will_paginate (3.1.6)
+    will_paginate-bootstrap (1.0.1)
+      will_paginate (>= 3.0.3)
+
+PLATFORMS
+  ruby
+  x86_64-darwin-16
+
+DEPENDENCIES
+  activerecord (~> 4.2)
+  dotenv
+  factory_girl (~> 4.8)
+  haml
+  pg
+  pry
+  rack-healthcheck
+  rack-rewrite
+  rack-test
+  racksh
+  rake
+  rspec
+  simplecov
+  sinatra
+  sinatra-activerecord (~> 2.0)
+  sinatra-contrib
+  sinatra-flash
+  sinatra-has_scope
+  sinatra-initializers
+  sinatra_auth_github!
+  unicorn
+  webmock
+  will_paginate
+  will_paginate-bootstrap
+
+BUNDLED WITH
+   1.14.6

@@ -1,0 +1,17 @@
+require 'sinatra/activerecord/rake'
+require 'dotenv/tasks'
+require 'rspec/core'
+require 'rspec/core/rake_task'
+
+ENV['RACK_ENV'] ||= 'development'
+
+Dir.glob('lib/tasks/**/*.rake').each { |r| load r}
+
+namespace :db do
+  task :load_config => :dotenv do
+    require './app/controllers/application_controller'
+  end
+end
+
+desc "Run all specs in spec directory (excluding plugin specs)"
+RSpec::Core::RakeTask.new(:spec)

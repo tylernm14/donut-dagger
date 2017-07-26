@@ -1,0 +1,73 @@
+%tr
+  %td.text-nowrap
+    %a{href: "/jobs/admin/#{job.id}", class: "label label-job-#{job.status}"} #{job.status.upcase}
+    - if job.status == 'running' || job.status == 'waiting' || job.status == 'queued'
+      %a.btn-icon.glyphicon.glyphicon-remove-circle{href: '', type: 'button', id: "terminate-icon-#{job.id}"}
+    -#- else
+    -#  %a{href: ''}
+  -#  - if job.status == 'running' || job.status == 'waiting' || job.status == 'queued'
+  -#    = link_to '', job_path(job.uuid, job_id: job.id, service_name: job.service_name, result_count: job.result_count, status: 'terminated'), { method: 'put', remote: true, class: 'glyphicon glyphicon-remove-circle' }
+  %td
+    %a{href: "/jobs/admin/#{job.id}"} #{job.name}
+  %td
+    = date_time_format(job.start_time || job.created_at)
+  - if job.status == 'running'
+    %td
+      - if job.start_time
+        = distance_of_time_in_words(job.start_time.to_s.to_i, DateTime.now.to_i, include_seconds: true)
+      - else
+        ERR: No timing info
+  - elsif job.end_time.nil?
+    %td
+      No timing info
+  - else
+    %td
+      - if job.start_time && job.end_time
+        = distance_of_time_in_words(job.start_time.to_i, job.end_time.to_i, include_seconds: true)
+      - else
+        ERR: No timing info
+  %td
+    = job.dependencies_completed
+    -#= job.dependencies_succeeded_count
+  %td
+    = job.dependencies_remaining
+    -#= job.dependencies_count - job.dependencies_succeeded_count
+  -#%td
+  -#  - if job.result_count > 0
+  -#    = link_to 'Results', results_path(by_job_id: job.id), class: 'btn-sm btn-primary'
+  %td.text-nowrap
+    -#&ltResults&gt
+    %span.badge
+      = job.result_count
+    - if job.result_count > 0
+      %a{href: "/results/admin?by_job_id=#{job.id}", class: 'btn-sm btn-primary'} Results
+    -#  %td.text-nowrap
+    -#- if workflow.result_count > 0
+    -#  %a{href: "/results?by_workflow_id=#{workflow.id}", class: 'btn-sm btn-primary'} Results
+    -#  %span.badge
+    -#    = workflow.result_count
+  %td
+    = job.uuid
+
+:javascript
+
+  $("#terminate-icon-#{job.id}").on('click', function(){
+  var formdata = { 'status': 'terminated' };
+  $.ajax({
+    url: "/jobs/#{job.id}", // url where to submit the request
+    type : "PUT", // type of action POST || GET
+    dataType : "json", // data type
+    contentType: "application/json",
+    data : JSON.stringify(formdata), // post data || get data
+    success : function(json) {
+                    // you can see the result from the console
+                    // tab of the developer tools
+      console.log(json);
+      window.location.href = "/jobs/admin/" + json.id;
+    },
+    error: function(xhr, resp, text) {
+      console.log(xhr, resp, text);
+      alert("Failed to terminate job");
+    }
+  })
+  });

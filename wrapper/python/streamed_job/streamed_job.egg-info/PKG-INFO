@@ -1,0 +1,10 @@
+Metadata-Version: 1.0
+Name: streamed-job
+Version: 0.1.0
+Summary: Run a process with a timeout and stream output to a db
+Home-page: http://www.fakeurl.nowhere
+Author: Tyler Martin
+Author-email: tylernm@gmail.com
+License: LICENSE.txt
+Description: UNKNOWN
+Platform: UNKNOWN

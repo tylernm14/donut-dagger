@@ -1,0 +1,113 @@
+%link{:href => "/css/monokai.css", :rel => "stylesheet"}/
+
+.row
+  .col-lg-12
+    .text-nowrap
+      %h3.page-header
+        New Workflow
+        %a{href: '/examples/fruitbox_gather.yml'} fruitbox-gather
+        %a{href: '/examples/fruitbox_multi_root.yml'} fruitbox-multi-root
+        %a{href: '/examples/upload_cache.yml'} upload-cache
+    %h5 Upload Files
+    #dropmehere.dropzone
+    %h5 Definition
+    .panel.panel-default
+      .panel-body
+        %form{method: 'POST', action: "#{request.script_name}/admin", id: 'form-new'}
+          .form-group
+            %label.control-label{ for: 'description' } Description:
+            %input.form-control{type: 'text', name: 'description', placeholder: placeholder_description, value: input_description}
+          .form-group
+            %label.control-label{ for: 'parallelism' } Parallelism:
+            %input.form-control{type: 'text', name: 'parallelism', placeholder: placeholder_parallelism, value: input_parallelism, }
+          .form-group
+            %label.control-label{ for: 'data' } YAML/JSON Definition:
+            - if input_data
+              %textarea.form-control{id: 'definition-text', style: 'font-family:monospace;', rows: 80, name: 'data'} #{(input_data)}
+            - else
+              %textarea.form-control{id: 'definition-text', style: 'font-family:monospace;', rows: 80, name: 'data', placeholder: placeholder_data}
+          .form-group
+            %button.btn.btn-primary{ type: 'submit', id: 'submit' } Create
+            %a.btn.btn-default{href: "#{request.script_name}/admin"} Cancel
+%script{src: '/js/dropzone.js'}
+%script{src: '/js/codemirror.js'}
+%script{src: '/js/yaml.js'}
+
+:javascript
+
+  var code = $('#definition-text')[0]
+  var editor = CodeMirror.fromTextArea(code, {
+    lineNumbers: true,
+    // theme: 'monokai',
+    indentUnit: 2,
+    tabSize: 2
+  });
+
+  editor.setSize('100%', 600);
+  Dropzone.autoDiscover = false;
+  var dz = new Dropzone("div#dropmehere", {
+    url: "#{ENV['CELLAR_URL_PUBLIC']}/local_inputs",
+    headers: {
+      'Authorization': "Token token=#{ENV['ADMIN_TOKEN']}"
+    },
+    params: { 'workflow_uuid': '#{new_uuid}' },
+    maxFiles: 10,
+    addRemoveLinks: true,
+    dictDefaultMessage: "Drop some stuff here, and use it from the inputs cache",
+    init: function() {
+      this.on('complete', function(file) {
+        console.log(file);
+      });
+    },
+    autoProcessQueue: false
+  });
+
+-#$("#submit").on('click', function(){
+-#  dz.processQueue();
+-#  var formdata = {uuid: '#{new_uuid}'};
+-#  $.each($('#form-new').serializeArray(), function(i, obj) { formdata[obj.name] = obj.value });
+-#  formdata['data'] = editor.getValue();
+-#  $.ajax({
+-#    url: "/workflows", // url where to submit the request
+-#    type : "POST", // type of action POST || GET
+-#    dataType : "json", // data type
+-#    contentType: "application/json",
+-#    data : JSON.stringify(formdata), // post data || get data
+-#    success : function(json) {
+-#                    // you can see the result from the console
+-#                    // tab of the developer tools
+-#      console.log(json);
+-#      window.location.href = "/workflows/admin/" + json.id;
+-#    },
+-#    error: function(xhr, resp, text) {
+-#      console.log(xhr, resp, text);
+-#      alert("Invalid workflow definition");
+-#    }
+-#  });
+-#});
+
+-#:coffeescript
+-#  import d3 from "d3";
+-#  $(document).ready ->
+-#    data  = [3,7,9,1,4,6,8,2,5]
+-#    w     = 700
+-#    h     = 300
+-#    max   = d3.max(data)
+-#
+-#    # Scales
+-#    x  = d3.scale.linear().domain([0, data.length - 1]).range [0, w]
+-#    y  = d3.scale.linear().domain([0, max]).range [h, 0]
+-#
+-#    # Base vis layer
+-#    vis = d3.select('#chart')
+-#      .append('svg:svg')
+-#        .attr('width', w)
+-#        .attr('height', h)
+-#
+-#    # Add path layer
+-#    vis.selectAll('path.line')
+-#      .data([data])
+-#    .enter().append("svg:path")
+-#      .attr("d", d3.svg.line()
+-#        .x((d,i) -> x(i))
+-#        .y(y))

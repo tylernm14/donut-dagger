@@ -1,0 +1,41 @@
+
+default: &default
+  adapter: postgresql
+  pool: 15
+  timeout: 5000
+  database:   <%= ENV['DB_NAME'] || "#{ENV['APP_NAME']}_development" %>
+  host:       <%= ENV['DB_HOST']     || begin
+                                          `bash -c '[ -e /usr/local/bin/minikube ]'`
+                                          if $? == 0
+                                            `minikube ip`
+                                          elsif ENV['DOCKER_HOST'].nil?
+                                            'localhost'
+                                          else
+                                            ENV['DOCKER_HOST'][/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/]
+                                          end
+                                        end %>
+  port:       <%= ENV['DB_PORT']     || begin
+                                          `bash -c '[ -e /usr/local/bin/minikube ]'`
+                                          if $? == 0
+                                            `kubectl --context=minikube get -o jsonpath={.spec.ports[0].nodePort} svc/postgres`
+                                          elsif ENV['DOCKER_HOST'].nil?
+                                            5432
+                                          else
+                                            5433
+                                          end
+                                        end %>
+  username:   <%= ENV['DB_USERNAME'] || 'postgres'     %>
+  password:   <%= ENV['DB_PASSWORD'] || ''             %>
+
+test:
+  <<: *default
+  database: <%= "#{ENV['APP_NAME']}_test" %>
+
+development:
+  <<: *default
+
+production: &server
+  <<: *default
+
+local:
+  <<: *server

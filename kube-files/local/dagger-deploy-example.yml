@@ -1,0 +1,109 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dagger
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: dagger
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 0
+  template:
+    metadata:
+      labels:
+        app: dagger
+        cpu_usage: blue
+    spec:
+      containers:
+      - name: dagger
+        image: dagger:mine
+        resources:
+          requests:
+            cpu: 200m
+        command:
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: "/healthcheck"
+            port: 80
+          initialDelaySeconds: 3
+          timeoutSeconds: 5
+        env:
+        - name: APP_NAME
+          value: dagger
+        - name: DOMAIN
+          value: 
+        - name: CPU_ALLOCATED_PER_JOB
+          value: 200m
+        - name: DAGGER_JOB_SECRETS
+          value: 
+        - name: DB_HOST
+          value: postgres
+        - name: DB_NAME
+          value: dagger_local
+        - name: DB_PASSWORD
+          value: ''
+        - name: DB_PORT
+          value: '5432'
+        - name: DB_USERNAME
+          value: postgres
+        - name: ETCD_ADDR
+          value: 10.0.2.15
+        - name: ETCD_PORT
+          value: '2379'
+        - name: GITHUB_CLIENT_ID
+          value:
+        - name: GITHUB_CLIENT_SECRET
+          value: 
+        - name: RACK_ENV
+          value: local
+        - name: RAILS_ENV
+          value: local
+        - name: REDIS_HOST
+          value: redis-master
+        - name: REDIS_PORT
+          value: '6379'
+        - name: SESSION_SECRET
+          value: 
+        - name: WARDEN_GITHUB_VERIFIER_SECRET
+          value: 
+        - name: SHARED_FS_MOUNT_PATH
+          value: "/srv"
+        - name: SHARED_VOL_CLAIM
+          value: nfs-vol-claim
+        - name: USERS_URL
+          value: http://users
+        - name: CELLAR_URL
+          value: http://cellar
+        - name: CELLAR_URL_PUBLIC
+          value: 
+        - name: ADMIN_TOKEN
+          value: 
+      - name: kubectl
+        image: kubectl:1.5.1
+        resources:
+          requests:
+            cpu: 20m
+        command:
+        - "/usr/local/bin/kubectl"
+        - proxy
+        - "-p"
+        - '8001'
+        - "--kubeconfig"
+        - "/vol-secrets/kubeconfig"
+        volumeMounts:
+        - mountPath: "/vol-secrets"
+          name: vol-secrets
+      nodeSelector:
+        cpu_usage: blue
+      volumes:
+      - name: vol-secrets
+        secret:
+          secretName: kubeconfig

@@ -1,0 +1,16 @@
+- if flash.present?
+  .row
+    .col-lg-12
+      .flash
+        - flash.each do |k, v|
+          .alert.alert-warning
+            .button.close{'data-dismiss'=>"alert"}
+              ×
+            %h4
+              - if v.kind_of?(Array)
+                - v.each do |nv|
+                  %ul
+                    %li.error
+                      = nv
+              - else
+                = v

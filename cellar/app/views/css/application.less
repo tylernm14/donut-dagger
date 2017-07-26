@@ -1,0 +1,237 @@
+/* @import "twitter/bootstrap/normalize"; */
+/* @import "twitter/bootstrap/print"; */
+/* @import "twitter/bootstrap/glyphicons"; */
+/* @import "twitter/bootstrap/scaffolding"; */
+/* @import "twitter/bootstrap/type"; */
+/* @import "twitter/bootstrap/code"; */
+/* @import "twitter/bootstrap/grid"; */
+/* @import "twitter/bootstrap/tables"; */
+/* @import "twitter/bootstrap/forms"; */
+/* @import "twitter/bootstrap/buttons"; */
+/* @import "twitter/bootstrap/component-animations"; */
+/* @import "twitter/bootstrap/dropdowns"; */
+/* @import "twitter/bootstrap/button-groups"; */
+/* @import "twitter/bootstrap/input-groups"; */
+/* @import "twitter/bootstrap/navs"; */
+/* @import "twitter/bootstrap/navbar"; */
+/* @import "twitter/bootstrap/breadcrumbs"; */
+/* @import "twitter/bootstrap/pagination"; */
+/* @import "twitter/bootstrap/pager"; */
+/* @import "twitter/bootstrap/labels"; */
+/* @import "twitter/bootstrap/badges"; */
+/* @import "twitter/bootstrap/jumbotron"; */
+/* @import "twitter/bootstrap/thumbnails"; */
+/* @import "twitter/bootstrap/alerts"; */
+/* @import "twitter/bootstrap/progress-bars"; */
+/* @import "twitter/bootstrap/media"; */
+/* @import "twitter/bootstrap/list-group"; */
+/* @import "twitter/bootstrap/panels"; */
+/* @import "twitter/bootstrap/responsive-embed"; */
+/* @import "twitter/bootstrap/wells"; */
+/* @import "twitter/bootstrap/close"; */
+/* @import "twitter/bootstrap/modals"; */
+/* @import "twitter/bootstrap/tooltip"; */
+/* @import "twitter/bootstrap/popovers"; */
+/* @import "twitter/bootstrap/carousel"; */
+/* @import "twitter/bootstrap/utilities"; */
+/* @import "twitter/bootstrap/responsive-utilities"; */
+
+@import (less) 'bootstrap.css';
+
+body {
+  padding-top: 52px;
+}
+
+nav.navbar-default {
+  background-color: #8787af;
+}
+
+nav.navbar-default .navbar-nav > .active > a,
+nav.navbar-default .navbar-nav > .active > a:hover,
+nav.navbar-default .navbar-nav > .active > a:focus {
+  background-color: #ffffff;
+}
+
+.navbar-default .navbar-nav > li > a {
+  color: #ffffff;
+}
+
+footer {
+  margin-top: 100px;
+}
+
+.navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+  padding-top: 5px;
+}
+
+.navbar-default .navbar-brand {
+  padding: 0 15px;
+}
+
+.red{color:#e74c3c}
+.green{color:#11866f}
+.grey{color:#95a5a6}
+.gold{color:#FFD700}
+
+.panel-default > .panel-heading {
+  &.terminated{background-color:#f2dede}
+  &.failed{background-color:#fcf8e3}
+  &.dead{background-color:#fcf8e3}
+  &.succeeded{background-color:#d9edf7}
+  &.done{background-color:#d9edf7}
+  &.running{background-color:#dff0d8}
+  &.queued{background-color:#dff0d8}
+  &.launched{background-color:#dff0d8}
+}
+
+
+.badge-terminated{background-color:lighten(#000, 33.5%)}
+.badge-failed{background-color:#d9534f}
+.badge-dead{background-color:darken(#d9534f, 24%)}
+.badge-succeeded{background-color:#5cb85c}
+.badge-done{background-color:#5cb85c}
+.badge-running{background-color:#1d8bf1}
+.badge-launched{background-color:#93e5ff}
+.badge-queued{background-color:#ff9966}
+.badge-waiting{background-color:lighten(#000, 46.7%)}
+
+
+
+.panel .panel-heading .panel-actions {
+  float: right;
+  position: relative;
+  top: -28px;
+  margin-bottom: -23px;
+}
+
+.flash {
+  padding-top: 15px;
+  margin-bottom: -50px;
+}
+
+.caption{
+  margin: -10px auto 0;
+  position: relative;
+}
+
+.btn-full-width{
+  width: 100%;
+}
+
+.thumb{
+  margin-bottom: 25px;
+}
+
+.page-header-btn{
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.page-header-actions{
+  margin-top: -070px;
+  float: right !important;
+}
+
+.clear {
+  clear: both;
+}
+
+.no-padding{
+  padding: 0;
+}
+
+input-group.date{
+  width: 90px;
+}
+
+.table-borderless td,
+.table-borderless th {
+  border-top: none !important;
+}
+
+.btn-icon{
+  margin-left: 3px;
+}
+
+.panel-footer{
+  .stats{
+    float: right;
+    font-size: 14px;
+
+    .stat{
+      display: inline;
+      margin-left: 10px;
+      div{
+        display: inline;
+      }
+      &.completed{
+        color: #5cb85c;
+      }
+      &.failed{
+        color: #d9534f;
+      }
+      &.avg{
+        color: #337ab7;
+      }
+      .value{
+        color: #000;
+      }
+    }
+  }
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.margin-right-5{
+  margin-right: 5px;
+}
+
+.margin-left-5{
+  margin-left: 5px;
+}
+
+.top-buffer{
+  margin-top: 20px;
+}
+
+.col-md-2_4{
+  width: 20%;
+  float: left;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.label-job-terminated, .label-work-terminated {
+  &:extend(.label-default);
+}
+
+.label-job-succeeded, .label-job-done,
+.label-work-succeeded, .label-work-done {
+  &:extend(.label-success);
+}
+
+.label-job-running, .label-work-running,
+.label-job-launched, .label-work-launched {
+  &:extend(.label-primary);
+}
+
+.label-job-failed, .label-job-dead,
+.label-work-failed, .label-work-dead {
+  &:extend(.label-danger);
+}
+
+.label-job-waiting, .label-work-waiting {
+  &:extend(.label-default);
+}
+
+.label-job-bootstrap, .label-work-bootstrap {
+  &:extend(.label-info);
+}
+
+.label-job-queued, .label-work-queued {
+  &:extend(.label-warning);
+}

@@ -1,0 +1,13 @@
+.row
+  .col-lg-12
+    %h3.page-header #{xtotal} Results for #{title}
+
+.row
+  .col-lg-12
+    %div#Results
+      .row
+        - results.each do |r|
+          = haml :'/admin/results/_result', locals: { result: r }
+  %nav.text-center
+    = will_paginate results, renderer: BootstrapPagination::Sinatra
+

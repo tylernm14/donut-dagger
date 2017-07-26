@@ -1,0 +1,50 @@
+---
+jobs:
+- cmd: "/timer.py"
+  args:
+  - 30s
+  name: apple
+  image: timer:mine
+  outputs:
+  - save: true
+    local: output.txt
+  workdir_prefix: apple
+- cmd: "/timer.py"
+  args:
+  - 20s
+  name: banana
+  image: timer:mine
+  outputs:
+  - save: true
+    local: output.txt
+  workdir_prefix: banana
+- cmd: "/timer.py"
+  args:
+  - 30s
+  name: cantaloupe
+  image: timer:mine
+  outputs:
+  - save: true
+    local: output.txt
+  workdir_prefix: cantaloupe
+- cmd: "/gather_cpu_time.py"
+  args:
+  - apple
+  - banana
+  - cantaloupe
+  name: dragonfruit
+  image: timer:mine
+  inputs:
+  - local: apple/output.txt
+  - local: banana/output.txt
+  - local: cantaloupe/output.txt
+  outputs:
+  - save: true
+    local: total_cpu_time.txt
+neighbors:
+  apple:
+  - cantaloupe
+  banana:
+  - cantaloupe
+  cantaloupe:
+  - dragonfruit

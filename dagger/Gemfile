@@ -1,0 +1,57 @@
+source 'https://rubygems.org'
+
+gem 'pg'
+gem 'activerecord', '~> 4.2'
+gem 'activeresource'
+gem "activeresource-response"
+gem 'actionview'
+gem 'rake'
+gem 'sinatra'
+gem 'sinatra-activerecord', '~> 2.0'
+gem 'sinatra-initializers'
+gem 'sinatra-contrib'
+gem 'sinatra-flash'
+gem 'sinatra-has_scope', require: 'sinatra/has_scope'
+gem 'will_paginate'
+gem "will_paginate-bootstrap"
+gem 'haml'
+gem 'omniauth-google-oauth2'
+gem 'sidekiq'
+gem 'sidekiq-statistic'
+gem 'redis-namespace'
+gem 'dotenv'
+gem 'unicorn'
+gem 'rest-client'
+gem 'etcd'
+gem 'uuid'
+gem 'aws-sdk'
+gem 'therubyracer'
+gem 'less'
+gem 'coffee-script'
+gem 'rack-healthcheck', :git => 'git://github.com/tylernm14/rack-healthcheck'
+gem 'sinatra_auth_github', :git => 'git://github.com/tylernm14/sinatra_auth_github'
+gem 'friendly_numbers'
+
+# Misc GEMs specific to this App
+gem 'json-schema'
+
+group :development, :test do
+  gem 'pry'
+  gem 'racksh'
+end
+
+group :test do
+  gem 'simplecov'
+  gem 'factory_girl', '~> 4.8'
+  gem 'rack-test'
+  gem 'rspec'
+  gem 'shoulda-matchers', github: 'thoughtbot/shoulda-matchers'
+  gem 'timecop'
+  gem 'webmock'
+end
+
+group :development do
+  gem 'sinatra-reloader'
+  gem 'guard'
+  gem 'guard-rspec', require: false
+end

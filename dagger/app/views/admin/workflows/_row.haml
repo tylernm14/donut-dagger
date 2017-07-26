@@ -1,0 +1,72 @@
+%tr.pointer.table-row{ :id => "workflow-#{workflow.uuid}" }
+  %td.text-nowrap<
+    %a{href: "/workflows/admin/#{workflow.id}", class: "label label-work-#{workflow.status}"} #{workflow.status.upcase}
+    -#%form{method: 'POST', action: "#{request.script_name}/", id: 'my-rerun-icon'}
+    -#  %input{type: 'hidden', name: 'definition_name', value: workflow.definition.name }
+    %a.btn-icon.glyphicon.glyphicon-refresh{href: "/workflows/admin/new/#{workflow.id}", type: 'button'}
+    - if !workflow.completed?
+      %a.btn-icon.glyphicon.glyphicon-remove-circle{href: '', type: 'button', id: "terminate-icon-#{workflow.id}"}
+  %td<
+    - if workflow.definition.name =~ /[0-9a-f]{5,40}/
+      = workflow.definition.description.humanize rescue ''
+    - else
+      = workflow.definition.name.humanize
+  %td<
+    = workflow.owner.name unless workflow.owner.nil?
+  %td.text<
+    = haml :'admin/workflows/_counts', locals: { workflow: workflow }
+  %td #{distance_of_time_in_words(workflow.created_at, Time.now)} ago
+  - if workflow.status == 'running' || workflow.status == 'waiting'
+    %td #{ distance_of_time_in_words(workflow.created_at, Time.now) }
+  - else
+    %td #{ distance_of_time_in_words(workflow.created_at, workflow.updated_at) }
+  %td.text-nowrap
+    - if workflow.result_count > 0
+      %a{href: "/results/admin?by_workflow_id=#{workflow.id}", class: 'btn-sm btn-primary'} Results
+      %span.badge
+        = workflow.result_count
+
+:javascript
+
+  $("#rerun-icon-#{workflow.id}").on('click', function(){
+    var formdata = { 'definition_name': "#{workflow.definition.name}"};
+    console.log('here')
+    $.ajax({
+      url: "/workflows", // url where to submit the request
+      type : "POST", // type of action POST || GET
+      dataType : "json", // data type
+      contentType: "application/json",
+      data : JSON.stringify(formdata), // post data || get data
+      success : function(json) {
+                      // you can see the result from the console
+                      // tab of the developer tools
+        console.log(json);
+        window.location.href = "/workflows/admin/" + json.id;
+      },
+      error: function(xhr, resp, text) {
+        console.log(xhr, resp, text);
+        alert("Invalid workflow definition");
+      }
+    })
+    });
+
+  $("#terminate-icon-#{workflow.id}").on('click', function(){
+  var formdata = { 'status': 'terminated' };
+  $.ajax({
+    url: "/workflows/#{workflow.id}", // url where to submit the request
+    type : "PUT", // type of action POST || GET
+    dataType : "json", // data type
+    contentType: "application/json",
+    data : JSON.stringify(formdata), // post data || get data
+    success : function(json) {
+                    // you can see the result from the console
+                    // tab of the developer tools
+      console.log(json);
+      window.location.href = "/workflows/admin/" + json.id;
+    },
+    error: function(xhr, resp, text) {
+      console.log(xhr, resp, text);
+      alert("Failed to terminate workflow");
+    }
+  })
+  });

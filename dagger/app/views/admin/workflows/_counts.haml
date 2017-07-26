@@ -1,0 +1,24 @@
+- if workflow.jobs_queued_count > 0
+  %span.badge.badge-queued{'data-toggle'=>'tooltip', 'title'=>'Queued'}
+    = workflow.jobs_queued_count
+- if workflow.jobs_waiting_count > 0
+  %span.badge.badge-waiting{'data-toggle'=>'tooltip', 'title'=>'Waiting'}
+    = workflow.jobs_waiting_count
+- if workflow.jobs_launched_count > 0
+  %span.badge.badge-launched{'data-toggle'=>'tooltip', 'title'=>'Launched'}
+    = workflow.jobs_launched_count
+- if workflow.jobs_running_count > 0
+  %span.badge.badge-running{'data-toggle'=>'tooltip', 'title'=>'Running'}
+    = workflow.jobs_running_count
+- if workflow.jobs_succeeded_count > 0
+  %span.badge.badge-succeeded{'data-toggle'=>'tooltip', 'title'=>'Succeeded'}
+    = workflow.jobs_succeeded_count
+- if workflow.jobs_failed_count > 0
+  %span.badge.badge-failed{'data-toggle'=>'tooltip', 'title'=>'Failed'}
+    = workflow.jobs_failed_count
+- if workflow.jobs_dead_count > 0
+  %span.badge.badge-dead{'data-toggle'=>'tooltip', 'title'=>'Dead'}
+    = workflow.jobs_dead_count
+- if workflow.jobs_terminated_count > 0
+  %span.badge.badge-terminated{'data-toggle'=>'tooltip', 'title'=>'Terminated'}
+    = workflow.jobs_terminated_count

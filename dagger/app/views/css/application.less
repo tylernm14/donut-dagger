@@ -1,0 +1,466 @@
+/* @import "twitter/bootstrap/normalize"; */
+/* @import "twitter/bootstrap/print"; */
+/* @import "twitter/bootstrap/glyphicons"; */
+/* @import "twitter/bootstrap/scaffolding"; */
+/* @import "twitter/bootstrap/type"; */
+/* @import "twitter/bootstrap/code"; */
+/* @import "twitter/bootstrap/grid"; */
+/* @import "twitter/bootstrap/tables"; */
+/* @import "twitter/bootstrap/forms"; */
+/* @import "twitter/bootstrap/buttons"; */
+/* @import "twitter/bootstrap/component-animations"; */
+/* @import "twitter/bootstrap/dropdowns"; */
+/* @import "twitter/bootstrap/button-groups"; */
+/* @import "twitter/bootstrap/input-groups"; */
+/* @import "twitter/bootstrap/navs"; */
+/* @import "twitter/bootstrap/navbar"; */
+/* @import "twitter/bootstrap/breadcrumbs"; */
+/* @import "twitter/bootstrap/pagination"; */
+/* @import "twitter/bootstrap/pager"; */
+/* @import "twitter/bootstrap/labels"; */
+/* @import "twitter/bootstrap/badges"; */
+/* @import "twitter/bootstrap/jumbotron"; */
+/* @import "twitter/bootstrap/thumbnails"; */
+/* @import "twitter/bootstrap/alerts"; */
+/* @import "twitter/bootstrap/progress-bars"; */
+/* @import "twitter/bootstrap/media"; */
+/* @import "twitter/bootstrap/list-group"; */
+/* @import "twitter/bootstrap/panels"; */
+/* @import "twitter/bootstrap/responsive-embed"; */
+/* @import "twitter/bootstrap/wells"; */
+/* @import "twitter/bootstrap/close"; */
+/* @import "twitter/bootstrap/modals"; */
+/* @import "twitter/bootstrap/tooltip"; */
+/* @import "twitter/bootstrap/popovers"; */
+/* @import "twitter/bootstrap/carousel"; */
+/* @import "twitter/bootstrap/utilities"; */
+/* @import "twitter/bootstrap/responsive-utilities"; */
+
+@import (less) 'bootstrap.css';
+
+body {
+  font-size: 13px;
+  padding-top: 52px;
+}
+
+nav.navbar-default {
+  //background-color: #398792;
+  font-size: 13px;
+}
+.navbar-default .navbar-nav > li > a {
+  //color: #ffffff;
+}
+
+nav.navbar-default .navbar-nav > .active > a,
+nav.navbar-default .navbar-nav > .active > a:hover,
+nav.navbar-default .navbar-nav > .active > a:focus {
+  //background-color: #e0e0e0;
+}
+
+footer {
+  margin-top: 100px;
+}
+
+//nav.navbar-default.navbar-fixed-top
+
+.navbar > .container .navbar-brand, .navbar > .container-fluid .navbar-brand {
+  padding-top: 8px;
+}
+//.navbar-nav > li > a, .navbar-brand {
+//  height: 30px;
+//}
+//.navbar {
+//  min-height: 40px;
+//  margin-bottom: 0;
+//
+//
+//}
+
+//.navbar-nav > li > a {padding-top:5px !important; padding-bottom:5px !important;}
+//.navbar {min-height: 13px !important}
+
+.navbar-default .navbar-brand {
+  padding: 0 15px;
+}
+
+.red{color:#e74c3c}
+.green{color:#11866f}
+.grey{color:#95a5a6}
+.gold{color:#FFD700}
+
+.panel-default > .panel-heading {
+  &.terminated{background-color:#f2dede}
+  &.failed{background-color:#fcf8e3}
+  &.dead{background-color:#fcf8e3}
+  &.succeeded{background-color:#d9edf7}
+  &.done{background-color:#d9edf7}
+  &.running{background-color:#dff0d8}
+  &.queued{background-color:#dff0d8}
+  &.launched{background-color:#dff0d8}
+}
+
+
+.badge-terminated{background-color:#454545}
+.badge-failed{background-color:#d9534f}
+.badge-dead{background-color:#7d1c1c}
+.badge-succeeded{background-color:#5cb85c}
+.badge-done{background-color:#5cb85c}
+.badge-running{background-color:#1d8bf1}
+.badge-launched{background-color:#93e5ff}
+.badge-queued{background-color:#ff9966}
+.badge-waiting{background-color:#b3b2b2}
+
+
+
+.panel .panel-heading .panel-actions {
+  float: right;
+  position: relative;
+  top: -28px;
+  margin-bottom: -23px;
+}
+
+.flash {
+  padding-top: 15px;
+  margin-bottom: -50px;
+}
+
+.caption{
+  margin: -10px auto 0;
+  position: relative;
+}
+
+.btn-full-width{
+  width: 100%;
+}
+
+.thumb{
+  margin-bottom: 25px;
+}
+
+.page-header-btn{
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.page-header-actions{
+  margin-top: -070px;
+  float: right !important;
+}
+
+.clear {
+  clear: both;
+}
+
+.no-padding{
+  padding: 0;
+}
+
+input-group.date{
+  width: 90px;
+}
+
+.table-borderless td,
+.table-borderless th {
+  border-top: none !important;
+}
+
+.btn-icon{
+  margin-left: 3px;
+}
+
+.panel-footer{
+  .stats{
+    float: right;
+    font-size: 14px;
+
+    .stat{
+      display: inline;
+      margin-left: 10px;
+      div{
+        display: inline;
+      }
+      &.completed{
+        color: #5cb85c;
+      }
+      &.failed{
+        color: #d9534f;
+      }
+      &.avg{
+        color: #337ab7;
+      }
+      .value{
+        color: #000;
+      }
+    }
+  }
+}
+
+.bold{
+  font-weight: bold;
+}
+
+.margin-right-5{
+  margin-right: 5px;
+}
+
+.margin-left-5{
+  margin-left: 5px;
+}
+
+.top-buffer{
+  margin-top: 20px;
+}
+
+.col-md-2_4{
+  width: 20%;
+  float: left;
+  position: relative;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.label-job-terminated, .label-work-terminated {
+  &:extend(.label-default);
+  background-color: #454545;
+}
+
+.label-job-succeeded, .label-job-done,
+.label-work-succeeded, .label-work-done {
+  &:extend(.label-success);
+}
+
+.label-job-running, .label-work-running,
+.label-job-launched, .label-work-launched {
+  &:extend(.label-primary);
+}
+
+.label-job-failed, .label-work-failed {
+  &:extend(.label-danger);
+}
+
+.label-job-waiting, .label-work-waiting {
+  &:extend(.label-default);
+}
+
+.label-job-bootstrap, .label-work-bootstrap {
+  &:extend(.label-info);
+}
+
+.label-job-queued, .label-work-queued {
+  &:extend(.label-warning);
+}
+
+.label-job-launched {
+  &:extend(.label-default);
+  background-color: #9ee8ff;
+}
+
+.label-work-dead, .label-job-dead {
+  &:extend(.label-default);
+  background-color: #7d1c1c;
+}
+
+
+
+td.text-left {
+  border-spacing:0;
+}
+td.text-right.col-md-3 {
+  border-spacing: 0;
+}
+table {
+  border-spacing:0; /* Removes the cell spacing via CSS */
+  border-collapse: collapse;  /* Optional - if you don't want to have double border where cells touch */
+  vertical-align: middle;
+}
+
+//table.table {
+//  width: auto;
+//  margin:0 auto;
+//}
+
+
+
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+  padding: 7px;
+  //font-size: 1.0em !important;
+  font-size: 15px;
+  vertical-align: middle;
+}
+.less-padding {
+  //padding: 2px !important;
+  padding-top: 2px !important;
+  padding-bottom: 2px !important;
+  padding-left: 8px !important;
+  padding-right: 8px !important;
+}
+
+.nav a{
+  font-size: 14px !important;
+}
+
+.back-a{
+  font-size: 13px !important;
+}
+
+textarea.form-control {
+  font-size: 13px;
+}
+
+.glyphicon {
+  top: 0.2em;
+}
+
+.a.whitelink {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.dropzone {
+  //border: 2px dashed #0087F7 !important;
+  border: 2px dashed #8bc8f9 !important;
+  border-radius: 5px;
+  background: white;
+  font-size: 16px;
+}
+
+h3 a {
+  font-size: 10px;
+}
+
+
+figure {
+  display: inline-block;
+  //border: 1px dotted gray;
+  margin: 0px; /* adjust as needed */
+}
+//figure a {
+//  vertical-align: top;
+//}
+figure img {
+  //border: 1px dotted gray;
+  vertical-align: top;
+}
+figure figcaption {
+  //border: 1px dotted red;
+  text-align: center;
+}
+
+figcaption {
+  text-align: center;
+}
+
+.navbar {
+  -webkit-box-shadow: 0 8px 6px -6px #999;
+  -moz-box-shadow: 0 8px 6px -6px #999;
+  box-shadow: 0 8px 6px -6px #999;
+
+  /* the rest of your styling */
+}
+
+path {
+  stroke-width: 1px;
+  stroke: rgb(200,0,0);
+}
+
+
+/* This sets the color for "TK" nodes to a light blue green. */
+g.type-TK > rect {
+  fill: #00ffd0;
+}
+g.waiting > rect {
+  fill: #bbbbbb;
+}
+g.launched > rect {
+  fill: #93e5ff;
+}
+g.running > rect {
+  fill: #1089f5;
+}
+g.succeeded > rect {
+  fill: #3fa742;
+}
+g.failed > rect {
+  fill: #e41516;
+}
+g.queued > rect {
+  fill: #ff8e00;
+}
+g.bootstrap > rect {
+  fill: #a534b6;
+}
+g.terminated > rect {
+  fill: #454545;
+}
+g.dead > rect {
+  fill: #7d1c1c;
+}
+
+text {
+  font-weight: 300;
+  font-size: 13px;
+  fill: #fff;
+  stroke: #fff;
+  //text-align: center;
+  //white-space: normal;
+}
+
+
+.node rect {
+  stroke: #999;
+  fill: #fff;
+  stroke-width: 1.5px;
+  cursor: pointer;
+  //width: 10px;
+  //height: 10px;
+  //x: -5;
+  //y: 10;
+}
+
+//.node text {
+//  pointer-events: none !important;
+//}
+
+
+.edgePath path {
+  stroke: #333;
+  stroke-width: 1.5px;
+}
+
+
+.row no-margin {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+
+/* This styles the title of the tooltip */
+.tipsy .name {
+  font-size: 1.5em;
+  font-weight: bold;
+  color: #60b1fc;
+  margin: 0;
+}
+
+/* This styles the body of the tooltip */
+.tipsy .description {
+  font-size: 1.2em;
+  text-align: left;
+}
+
+.tooltip {
+  position: absolute;
+  //z-index: 100000;
+}
+//
+//.tooltip-inner {
+//  background-color: #40a0d0;
+//  fill-opacity: 0.8;
+//}
+//
+//.tipz {
+//  position: relative;
+//  margin: 0px;
+//}
+

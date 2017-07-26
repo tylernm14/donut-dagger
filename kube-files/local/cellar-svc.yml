@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cellar
+  namespace: default
+  labels:
+    app: cellar
+spec:
+  type: ClusterIP
+  ports:
+  - port: 80
+    name: main
+    protocol: TCP
+  selector:
+    app: cellar
+  sessionAffinity: "ClientIP"
+
+---
+
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    ingress.kubernetes.io/ssl-redirect: "true"
+  name: cellar
+  labels:
+    app: cellar
+spec:
+  rules:
+  - host: www.dustysarcophagus.com
+    http:
+      paths:
+      - backend:
+          serviceName: cellar
+          servicePort: 80
+        path: /results
+      - backend:
+          serviceName: cellar
+          servicePort: 80
+        path: /workflow_envs
+      - backend:
+          serviceName: cellar
+          servicePort: 80
+        path: /local_inputs
+      - backend:
+          serviceName: cellar
+          servicePort: 80
+        path: /sidekiq/cellar
+      - backend:
+          serviceName: cellar
+          servicePort: 80
+        path: /auth
+  tls:
+  - hosts:
+    - www.dustysarcophagus.com
+    secretName: ssl-cert-dusty

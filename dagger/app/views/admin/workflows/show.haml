@@ -1,0 +1,293 @@
+
+.row
+  .col-lg-12
+    %h3.page-header #{workflow.definition.description.humanize}
+    .row
+    %div{ id: "workflow_#{workflow.id}" }
+      .panel.panel-default
+        .panel-heading
+          -#%a{href: "workflows/admin/new/#{workflow.id}", class: 'btn btn-warning'} Rerun
+          .pull-right
+            -#%a{href: "#{back}" } <span class="glyphicon glyphicon-chevron-left"></span> Back
+            %a.btn-icon.glyphicon.glyphicon-refresh{href: "/workflows/admin/new/#{workflow.id}", style: 'font-size: 1.5em;', type: 'button'}
+          .panel-title Workflow
+        .panel-body
+          %table.table.table-hover.table-borderless.less-padding
+            %tbody.small
+              %tr
+                %th.text-right.my.col-md-3.less-padding Definition Name
+                %td.text-left.less-padding #{workflow.definition.name}
+              %tr
+                %th.text-right.col-md-3.less-padding Definition Description
+                %td.text-left.less-padding #{workflow.definition.description}
+              %tr
+                %th.text-right.col-md-3.less-padding Owner
+                %td.text-left.less-padding
+                  - unless workflow.owner.nil?
+                    = workflow.owner.name
+              %tr
+                %th.text-right.col-md-3.less-padding Uuid
+                %td.text-left.less-padding #{workflow.uuid}
+              %tr
+                %th.text-right.col-md-3.less-padding Status
+                %td.text-left.less-padding
+                  = @workflow.status.capitalize
+              %tr
+                %th.text-right.col-md-3.less-padding
+                %td.text-left.less-padding
+                  = haml :'admin/workflows/_counts', locals: { workflow: workflow }
+              %tr
+                %th.text-right.col-md-3.less-padding Start Time:
+                %td.text-left.less-padding
+                  = date_time_format(@workflow.created_at)
+
+              %tr
+                %th.text-right.col-md-3.less-padding Elapsed Time:
+                %td.text-left.less-padding
+                  = distance_of_time_in_words(workflow.created_at, workflow.updated_at) if workflow.completed?
+
+    .panel.panel-default
+      .panel-heading
+        .panel-title Graph
+      .panel-body.no-padding
+        %svg#svg-canvas{width: '100%', height: '100%'}
+        #tipz
+    %div{ id: "workflow_#{workflow.id}_details" }
+      .panel.panel-default
+        .panel-heading
+          .panel-title Jobs
+        %table.table.table-hover#collapseGroup
+          %thead
+            %tr
+              %th Status
+              %th Name
+              %th Start Time
+              %th Run Time
+              %th Deps Fulfilled
+              %th Deps Remaining
+              %th Result Count
+              %th UUID
+          %tbody
+            - workflow.jobs.each do |job|
+              = haml :'/admin/workflows/_row_jobs', locals: { job: job }
+      -#- if @workflow.respond_to? :events
+      -#  = render partial: 'events', locals: { events: @workflow.events }
+
+    .panel.panel-default
+      .panel-heading
+        .panel-title
+          .button.btn.btn-info{'data-toggle' => 'collapse', 'data-target' => '#request'}
+            Show Definition
+      .panel-body.collapse#request
+        %pre
+          %code.language-yaml
+            = preserve do
+              .text-left
+                = @workflow.definition.data.to_yaml
+
+    -#%form{method: 'POST', action: "#{request.script_name}/", id: 'form-new-env'}
+    #new-env
+      .panel.panel-default
+        .panel-heading
+          .panel-title #{workflow_envs.count} #{'Snapshot'.pluralize(workflow_envs.count)}
+        #workflow-envs
+          #workflow-envs-content
+            - if workflow_envs.count > 0
+              .panel-body
+                %table.table.table-hover#collapseGroup1
+                  %thead
+                    %tr
+                      %th Status
+                      %th Created on
+
+                  %tbody
+                    - @workflow_envs.each do |we|
+                      = haml :'/admin/workflows/_row_workflow_envs', locals: { workflow_env: we }
+        .panel-footer
+          %button.btn.btn-info{ type: 'button', id: 'submit' } Snapshot
+
+%script{src: 'https://d3js.org/d3.v3.min.js'}
+%script{src: '/js/dagre-d3.min.js'}
+%script{src: '/js/moment.min.js'}
+%script{src: '/js/moment-duration-format.js'}
+
+
+:javascript
+  var g = null;
+  var render = null;
+  var svg = null;
+  var inner = null;
+  var zoom = null;
+
+
+  $(document).ready(function() {
+    onSvgLoad();
+   });
+
+  function onSvgLoad() {
+    // fetchJobsData();
+    g = new dagreD3.graphlib.Graph({directed: true})
+      .setGraph({})
+      .setDefaultEdgeLabel(function() { return {}; });
+    render = new dagreD3.render();
+    var jobs = #{jobs_json};
+    var edges = #{job_edges_json};
+
+    svg = d3.select("#svg-canvas");
+    updateGraphAndRender(jobs, edges);
+    var svgWidth = parseInt(svg.style("width"), 10);
+    var svgHeight = parseInt(svg.style("height"), 10);
+    var initialScale = 0.85;
+    var translate = [(svgWidth - g.graph().width * initialScale) / 2, 20];
+    var height =  g.graph().height * initialScale + 40;
+    updateSvg(translate, initialScale, height);
+  }
+
+
+  function fetchJobsData() {
+    $.ajax({
+      url: "/jobs?by_workflow_uuid=#{workflow.uuid}", // url where to submit the request
+      type : "GET", // type of action POST || GET
+      dataType : "json", // data type
+      contentType: "application/json",
+      headers: { 'Authorization': 'Token token=#{user_token}' },
+      success : function(jobs) {
+                      // you can see the result from the console
+                      // tab of the developer tools
+        var orig_translate = zoom.translate();
+        var orig_scale = zoom.scale();
+        var orig_height = svg.attr("height");
+        // inner.selectAll("g.node").each(function(e) {
+        //   $(this).tipsy.revalidate();
+        // });
+        d3.select("svg").selectAll("*").remove();
+        updateGraphAndRender(jobs, null);
+        updateSvg(orig_translate, orig_scale, orig_height)
+      },
+      error: function(xhr, resp, text) {
+        console.log(xhr, resp, text);
+        console.log("Could not fetch workflow with uuid #{workflow.uuid}");
+      }
+    });
+  }
+
+  function updateGraphAndRender(jobs, edges) {
+    for (var j = 0; j < jobs.length; j++)
+    {
+      g.setNode(jobs[j]['name'], { label: jobs[j]['name'], class: "g "+jobs[j]['status']+ " " + jobs[j]['name'], rx: 5, ry: 5, description: 'stuff' });
+    }
+    if (edges != null) {
+      edges.forEach(function(v) {
+        g.setEdge(v[0], v[1]);
+      });
+     }
+    zoom = d3.behavior.zoom().on("zoom", function() {
+      inner.attr("transform", "translate(" + d3.event.translate + ")" +
+        "scale(" + d3.event.scale + ")");
+      });
+    svg.call(zoom);
+    inner = svg.append("g");
+    // Simple function to style the tooltip for the given node.
+    var styleTooltip = function(name, description) {
+      job = jobs.find(function(elem){
+        return elem['name'] === name;
+      });
+      var status = job['status'];
+      var start_time = job['start_time'];
+      var end_time = job['end_time'];
+      var elapsed_time = 0;
+      var deps_count = job['dependencies_count'];
+      var deps_succ = job['dependencies_succeeded_count'];
+      var deps_rem   = deps_count - deps_succ;
+
+      if (start_time !== null && end_time !== null) {
+        elapsed_time = moment.duration(Date.parse(end_time) - Date.parse(start_time));
+        elapsed_time = elapsed_time.format('h[h], m[m], s[s]', {trim: false});
+      } else if (start_time !== null) {
+        elapsed_time = moment.duration(moment() - Date.parse(start_time));
+        elapsed_time = elapsed_time.format('h[h], m[m], s[s]', {trim: false});
+      } else {
+        elapsed_time = null;
+      }
+      return "<p class='name'>" + name + "</p><p class='description'>"
+        +"Status: "+status+"<br>"
+        +"Elapsed time: "+elapsed_time+"<br>"
+        +"Deps remaining: "+deps_rem+"</p>";
+    };
+    render(inner, g);
+
+
+    // Bootstrap tooltips dont work well with svg elements because they store transform data in different locations...
+    // inner.selectAll("g.node")
+         // .attr("data-toggle", "tooltip")
+         // .attr("title", function(v) { return styleTooltip(v, g.node(v).description) })
+         // .each(function(v) { $(this).tooltip({ 'container': 'body', html: true }); });
+    // ... but tipsy works!
+    inner.selectAll("g.node")
+      .attr("title", function(v) { return styleTooltip(v, g.node(v).description) })
+      .each(function(v) { $(this).tipsy({ gravity: "w", opacity: 1, html: true }); });
+
+  }
+
+  function updateSvg(translate, scale, height) {
+    zoom
+      .translate(translate)
+      .scale(scale)
+      .event(svg);
+    svg.attr("height", height);
+    console.log($('[data-toggle="tooltip"]'));
+    console.log($('.g.node.g'));
+    // $('[data-toggle="tooltip"]').tooltip();
+    $('span.badge').tooltip();
+    // $('.my_circle').tooltip({'container': 'body'});
+    // $(['g.node']).tooltip({ 'container': 'g.node', 'html': true, 'placement': 'top'});
+  }
+
+
+:javascript
+
+  $("#submit").on('click', function(){
+    var formdata = { "workflow_uuid": "#{workflow.uuid}" };
+    $.ajax({
+      url: "/workflow_envs", // url where to submit the request
+      type : "POST", // type of action POST || GET
+      dataType : "json", // data type
+      contentType: "application/json",
+      data : JSON.stringify(formdata), // post data || get data
+      success : function(json) {
+                      // you can see the result from the console
+                      // tab of the developer tools
+        console.log(json);
+        // window.location.href = "/workflows/admin/" + json.id;
+        $('#workflow-envs').load("/workflows/admin/#{workflow.id}".concat(window.location.search, ' #workflow-envs-content'));
+      },
+      error: function(xhr, resp, text) {
+        console.log(xhr, resp, text);
+        alert("Unable to create workflow snapshot");
+      }
+    })
+  });
+
+:javascript
+  $(function() {
+    var REFRESH_INTERVAL_IN_MILLIS = 5000;
+    setInterval(function(){
+      $('#workflow-envs').load("/workflows/admin/#{workflow.id}".concat(window.location.search, ' #workflow-envs-content'))
+    }, REFRESH_INTERVAL_IN_MILLIS);
+    })
+
+- unless @workflow.all_jobs_completed?
+  :javascript
+    $("#workflow_#{@workflow.id}").ready(function() {
+      var REFRESH_INTERVAL_IN_MILLIS = 5000;
+      setInterval(function(){
+        $('#workflow_#{@workflow.id}').load("/workflows/admin/#{@workflow.id}  #workflow_#{@workflow.id}");
+        $('#workflow_#{@workflow.id}_details').load("/workflows/admin/#{@workflow.id}  #workflow_#{@workflow.id}_details");
+        // var svg = d3.select("#svg-canvas");
+        // svg.remove();
+        // Cleanup old graph
+        fetchJobsData();
+        // updateSvg();
+      }, REFRESH_INTERVAL_IN_MILLIS);
+    });
+

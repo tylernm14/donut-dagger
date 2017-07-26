@@ -1,0 +1,14 @@
+---
+:verbose: true
+development:
+  :concurrency: 2
+toolbox:
+  :concurrency: 2
+local:
+  :concurrency: 2
+staging:
+  :concurrency: 4
+production:
+  :concurrency: 8
+:queues:
+  - save_workflow_env

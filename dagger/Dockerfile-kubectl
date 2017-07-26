@@ -1,0 +1,13 @@
+FROM golang:1.6
+MAINTAINER Tyler Martin tyler@gmail.com
+
+# rsync is required for building kubectl
+RUN apt-get update && apt-get install -y rsync
+
+# Install kubectl
+ENV K8S_VERSION=1.5.1
+ADD https://github.com/kubernetes/kubernetes/releases/download/v${K8S_VERSION}/kubernetes.tar.gz /src/kubernetes.tar.gz
+ADD https://dl.k8s.io/v${K8S_VERSION}/kubernetes-client-linux-amd64.tar.gz /src/kube-client-bin.tar.gz
+RUN cd /src && tar xzf /src/kubernetes.tar.gz && tar xzf /src/kube-client-bin.tar.gz
+RUN cp /src/kubernetes/client/bin/kubectl /usr/local/bin/kubectl
+COPY start-kubectl-proxy.sh /usr/local/bin/start.sh

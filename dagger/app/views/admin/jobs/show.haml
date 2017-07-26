@@ -1,0 +1,96 @@
+.container
+  .page-header
+    .row
+      %br
+      .col-lg-12
+        %h3 #{job.name.capitalize}
+  %div{ id: "job_#{job.id}" }
+    .panel.panel-default
+      .panel-heading
+        .pull-right
+          %a{href: "#{back}", class: "back-a" } <span class="glyphicon glyphicon-chevron-left"></span> Back
+        .panel-title Job
+      .panel-body
+        %table.table.table-hover.table-borderless
+          %tbody.small
+            %tr
+              %th.text-right.col-md-3.less-padding Name
+              %td.text-left.less-padding #{job.name}
+            %tr
+              %th.text-right.col-md-3.less-padding Status
+              %td.text-left.less-padding #{job.status}
+            %tr
+              %th.text-right.col-md-3.less-padding Updated
+              %td.text-left.less-padding #{date_time_format(job.updated_at)}
+            %tr
+              %th.text-right.col-md-3.less-padding Uuid
+              %td.text-left.less-padding #{job.uuid}
+            %tr
+              %th.text-right.col-md-3.less-padding Workflow
+              %td.text-left.less-padding
+                %a{href: "/workflows/admin/#{job.workflow.id}"} #{job.workflow.uuid}
+            %tr
+              %th.text-right.col-md-3.less-padding Elapsed Time
+              - if job.status == 'running'
+                %td.text-left.less-padding
+                  = distance_of_time_in_words(job.start_time.to_i, DateTime.now.to_i, include_seconds: true)
+              - elsif job.end_time.nil?
+                %td.text-left.less-padding
+                  No timing info
+              - else
+                %td.text-left.less-padding
+                  = distance_of_time_in_words(job.start_time.to_i, job.end_time.to_i, include_seconds: true)
+
+
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title Messages
+      .panel-body
+        %pre
+          = preserve do
+            = job.messages
+
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title stdout
+      .panel-body
+        %pre
+          = preserve do
+            = job.stdout
+      - unless job.completed?
+        .panel-footer
+          %img{src: '/images/cat_run_by_slence.gif', height: '22px', style: 'padding-top: 0;padding-bottom: 0;margin-top: 0px;float: right;'}
+          .clear
+
+
+    .panel.panel-default
+      .panel-heading
+        %h3.panel-title stderr
+      .panel-body
+        %pre
+          = preserve do
+            = job.stderr
+      - unless job.completed?
+        .panel-footer
+          %img{src: '/images/cat_run_by_slence.gif', height: '22px', style: 'padding-top: 0;padding-bottom: 0;margin-top: 0px;float: right;'}
+          .clear
+
+  .panel.panel-default
+    .panel-heading
+      .panel-title
+        .button.btn.btn-info{'data-toggle' => 'collapse', 'data-target' => '#request'}
+          Show Definition
+    .panel-body.collapse#request
+      %pre
+        %code.language-yaml
+          = preserve do
+            .text-left
+              = job.description.to_yaml
+
+  :javascript
+    $("#job_#{job.id}").ready(function() {
+     var REFRESH_INTERVAL_IN_MILLIS = 5000;
+     setInterval(function(){
+       $("#job_#{job.id}").load("/jobs/admin/#{job.id}  #job_#{job.id}")
+     }, REFRESH_INTERVAL_IN_MILLIS);
+    });

@@ -1,0 +1,11 @@
+%tr
+  %td
+    #{date_time_meridian(workflow_env.created_at)}
+  %td
+    #{workflow_env.status}
+  %td
+    - if workflow_env.status == 'saved'
+      - if ENV['CELLAR_URL_PUBLIC']
+        %a{href: "#{ENV['CELLAR_URL_PUBLIC']}/workflow_envs/#{workflow_env.id}/download", class: 'btn-sm btn-primary'} Download
+      - else
+        %a{href: "#{workflow_env.zip_file.url}", class: 'btn-sm btn-primary'} Download

@@ -1,0 +1,34 @@
+<% host = ENV['REDIS_HOST'] || begin
+             `bash -c '[ -e /usr/local/bin/minikube ]'`
+              if $? == 0
+                `minikube ip`.chomp
+              elsif ENV['DOCKER_HOST'].nil?
+                'localhost'
+              else
+                ENV['DOCKER_HOST'][/\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b/]
+              end
+            end %>
+
+<% port = ENV['REDIS_PORT'] ||  begin
+                                  `bash -c '[ -e /usr/local/bin/minikube ]'`
+                                  if $? == 0
+                                    `kubectl --context=minikube get -o jsonpath={.spec.ports[0].nodePort} svc/redis-master`
+                                  elsif ENV['DOCKER_HOST'].nil?
+                                    6379
+                                  else
+                                    6378
+                                  end
+                                end %>
+
+test: &default
+  redis_namespace: <%= ENV['APP_NAME'] %>
+  redis_url: redis://<%= host %>:<%= port %>/0
+
+development:
+  <<: *default
+
+production:  &server
+  <<: *default
+
+local:
+  <<: *server

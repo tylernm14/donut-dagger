@@ -1,0 +1,17 @@
+.env
+.idea/
+ssl/
+*.pyc
+**/vendor/ruby
+*_secret*
+*-secret*
+*_sec*
+*-sec*
+tags
+tags.temp
+tags.lock
+etcd_logfile
+Makefile.simrender
+sim_render_job_driver.py
+test_job_efs.yml
+sim_render.yml

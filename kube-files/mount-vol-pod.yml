@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  labels:
+    app: mount-vol-pod
+  name: mount-vol-pod
+  namespace: default
+spec:
+  containers:
+  - name: mount-vol-pod
+    command: ['sleep', 'infinity']
+    image: ubuntu
+    volumeMounts:
+    - name: shared-vol
+      mountPath: /srv
+  volumes:
+  - name: shared-vol
+    persistentVolumeClaim:
+      claimName: nfs-vol-claim

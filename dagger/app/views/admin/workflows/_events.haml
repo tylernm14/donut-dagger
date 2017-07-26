@@ -1,0 +1,28 @@
+- unless events.empty?
+  .panel.panel-default
+    .panel-heading
+      .panel-title Events
+    %table.table.table-hover#collapseGroup
+      %thead
+        %tr
+          %th First Seen
+          %th Last Seen
+          %th Count
+          %th Type
+          %th Reason
+          %th Message
+      %tbody
+        - events.each do |event|
+          %tr
+            %td
+              = distance_of_time_in_words(DateTime.now, event.created_at, include_seconds: true)
+            %td
+              = distance_of_time_in_words(DateTime.now, event.updated_at, include_seconds: true)
+            %td
+              = event.count
+            %td
+              = event.status.titleize
+            %td
+              = event.reason
+            %td
+              = event.message

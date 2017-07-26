@@ -1,0 +1,30 @@
+%html{lang: 'en'}
+  %head
+    %meta{:content => "text/html; charset=UTF-8", "http-equiv" => "Content-Type"}
+    %meta{:charset => "utf-8"}
+    %meta{:content => "IE=edge", "http-equiv" => "X-UA-Compatible"}
+    %meta{:content => "width=device-width, initial-scale=1", :name => "viewport"}
+    / The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags
+    %meta{:content => "", :name => "cellar"}
+    %link{:href => "/images/displaycase.png", :rel => "icon"}/
+    %title Cellar
+    / Bootstrap core CSS
+    -#%link{:href => "/css/bootstrap.min.css", :rel => "stylesheet"}/
+    %link{:href => "/css/application.css", :rel => "stylesheet"}/
+    %link{:href => "/css/prism.css", :rel => "stylesheet"}/
+    %script{:src => "https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"}
+    / Custom styles for this template
+  %body
+    %header.header
+      = haml :_header
+    %section.body
+      .container
+        = yield
+    %footer.footer
+      = haml :_footer
+      / #Bootstrap core JavaScript
+    / Placed at the end of the document so the pages load faster
+    %script{:src => 'https://npmcdn.com/tether@1.2.4/dist/js/tether.min.js' }
+    %script{:src => "/js/bootstrap.min.js"}
+    %script{:src => '/js/application.js'}
+    %script{:src => '/js/prism.js'}

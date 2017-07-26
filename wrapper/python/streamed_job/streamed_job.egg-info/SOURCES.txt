@@ -1,0 +1,14 @@
+MANIFEST.in
+README.txt
+setup.py
+bin/run_streamed_job.py
+streamed_job/__init__.py
+streamed_job/external_resource.py
+streamed_job/job.py
+streamed_job/log_stream.py
+streamed_job/streamed_process.py
+streamed_job.egg-info/PKG-INFO
+streamed_job.egg-info/SOURCES.txt
+streamed_job.egg-info/dependency_links.txt
+streamed_job.egg-info/requires.txt
+streamed_job.egg-info/top_level.txt

@@ -1,0 +1,24 @@
+.col-lg-2.col-md-3.col-xs-4.thumb
+  .panel.panel-primary
+    .panel-heading
+      %a{href: "/results/admin/#{result.id}", class: "a whitelink"}
+        %h3.panel-title #{result.name}
+    .panel-body{'style'=>'min-height: 152px; max-height: 152px; overflow-y: scroll;'}
+      - if ENV['CELLAR_URL_PUBLIC']
+        %a{href: "/results/#{result.id}/download", class: 'fancybox', rel: 'group'}
+          %img{src: "/results/#{result.id}/thumb", class: 'img-responsive center-block'}
+      - else
+        %a{href: "#{result.file.url}", class: 'fancybox', rel: 'group'}
+          %img{src: "#{result.file.thumb.url}", class: 'img-responsive center-block'}
+    .panel-footer
+      .ul.list-unstyled
+        .li.small.text-center
+          = "Size: #{FriendlyNumbers.number_to_human_size(result.file_size)}"
+        .li.small.text-center
+          Job:
+          %a{href: "/jobs/admin/#{result.job_id}"} #{result.job_name}
+        .li.small.text-center
+          %a{href: "/workflows/admin/#{result.workflow_id}"} Workflow
+      %br
+      %a{href: "/results/admin/#{result.id}", class: 'btn btn-sm btn-default btn-full-width'} More Details
+      -#= link_to '<button class="btn btn-sm btn-default btn-full-width">More Details</button>'.html_safe, result_path(result.id)

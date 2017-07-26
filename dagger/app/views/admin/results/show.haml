@@ -1,0 +1,37 @@
+.row
+  .col-lg-12
+    %h3.page-header #{result.name}
+.row
+  .col-lg-12
+    .panel.panel-default
+      .panel-heading
+        .pull-right
+          %a{href: "#{back}"} <span class="glyphicon glyphicon-chevron-left"></span> Back
+        .panel-title Result
+      .panel-body
+        .col-sm-6
+          - if ENV['CELLAR_URL_PUBLIC']
+            %a{href: "/results/#{result.id}/download", class: 'fancybox', rel: 'group'}
+              %img{src: "/results/#{result.id}/large", class: 'img-responsive'} Download
+          - else
+            %a{href: "#{result.file.url}", class: 'fancybox', rel: 'group'}
+              %img{src: "#{result.file.large.url}", class: 'img-responsive'} Download
+
+          %p
+          .ul.list-unstyled
+            .li.small.text-left
+              = "Updated at: #{date_time_format(result.updated_at)}"
+            .li.small.text-left
+              = "Size: #{FriendlyNumbers.number_to_human_size(result.file_size)}"
+            .li.small.text-left
+              = "Content-type: #{result.file_content_type}"
+            .li.small.text-left
+              Job:
+              %a{href: "/jobs/admin/#{job.id}" } #{job.name}
+            .li.small.text-left
+              Workflow:
+              %a{href: "/workflows/admin/#{workflow.id}" } #{workflow.uuid}
+            .li.small.text-left
+              Definition:
+              %a{href: "/definitions/#{workflow.definition.id}" } #{workflow.definition.name}
+

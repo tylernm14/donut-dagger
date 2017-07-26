@@ -1,0 +1,83 @@
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: cellar
+spec:
+  replicas: 1
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: cellar
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 50%
+      maxSurge: 0
+  template:
+    metadata:
+      labels:
+        app: cellar
+        cpu_usage: blue
+    spec:
+      containers:
+      - name: cellar
+        image: cellar:mine
+        resources:
+          requests:
+            cpu: 200m
+        command:
+        ports:
+        - containerPort: 80
+        readinessProbe:
+          httpGet:
+            path: "/healthcheck"
+            port: 80
+          initialDelaySeconds: 3
+          timeoutSeconds: 5
+        volumeMounts:
+        - mountPath: "/srv"
+          name: shared-vol
+        env:
+        - name: APP_NAME
+          value: cellar
+        - name: DOMAIN
+          value: 
+        - name: DB_HOST
+          value: postgres
+        - name: DB_NAME
+          value: cellar_local
+        - name: DB_PASSWORD
+          value: ''
+        - name: DB_PORT
+          value: '5432'
+        - name: DB_USERNAME
+          value: postgres
+        - name: GITHUB_CLIENT_ID
+          value: 
+        - name: GITHUB_CLIENT_SECRET
+          value: 
+        - name: RACK_ENV
+          value: local
+        - name: REDIS_HOST
+          value: redis-master
+        - name: REDIS_PORT
+          value: '6379'
+        - name: SESSION_SECRET
+          value: 
+        - name: WARDEN_GITHUB_VERIFIER_SECRET
+          value: 
+        - name: SHARED_FS_MOUNT_PATH
+          value: "/srv"
+        - name: USERS_URL
+          value: http://users
+        - name: DAGGER_URL_PUBLIC
+          value: 
+        - name: ADMIN_TOKEN
+          value:
+      nodeSelector:
+        cpu_usage: blue
+      volumes:
+      - name: shared-vol
+        persistentVolumeClaim:
+          claimName: nfs-vol-claim
