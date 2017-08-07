@@ -6,8 +6,12 @@ require_relative '../services/../services/find_or_create_definition'
 require 'sinatra/namespace'
 require 'active_support/core_ext/time'
 require 'activeresource'
+require 'rack/protection'
 
 class WorkflowsController < ApplicationController
+
+  use Rack::Protection::FormToken
+
   WillPaginate.per_page = 50
   register Sinatra::Namespace
   register Sinatra::HasScope
@@ -50,7 +54,8 @@ class WorkflowsController < ApplicationController
       haml :'admin/workflows/new', locals: { input_description: '', placeholder_description: 'Your friendly description here',
                                              input_data: nil, placeholder_data: "Workflow definition...\nSee /examples/sim_render.yaml or /examples/fruitbox_gather.yaml",
                                              input_parallelism: '', placeholder_parallelism: 1,
-                                             new_uuid: @new_uuid
+                                             new_uuid: @new_uuid,
+                                             csrf_token: Rack::Protection::FormToken.token(session)
                                            }
     end
 

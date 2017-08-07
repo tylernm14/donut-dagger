@@ -26,6 +26,7 @@
               %textarea.form-control{id: 'definition-text', style: 'font-family:monospace;', rows: 80, name: 'data'} #{(input_data)}
             - else
               %textarea.form-control{id: 'definition-text', style: 'font-family:monospace;', rows: 80, name: 'data', placeholder: placeholder_data}
+          %input{type: 'hidden', 'name': 'authenticity_token', 'value': csrf_token}
           .form-group
             %button.btn.btn-primary{ type: 'submit', id: 'submit' } Create
             %a.btn.btn-default{href: "#{request.script_name}/admin"} Cancel
