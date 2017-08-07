@@ -154,6 +154,8 @@ class Job(object):
         cached_file = join('cached_files', i['cache'])
         self.check_path_exists(cached_file)
         dest_path = i['local']
+        parent_dir = os.path.dirname(i)
+        mkdir_p(parent_dir)
         move(cached_file, dest_path)
 
     def move(self, i):
