@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: redis
+  strategy:
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: redis
+        name: redis
+        cpu_usage: blue
+    spec:
+      containers:
+      - name: redis-cont
+        image: redis:4
+        ports:
+        - containerPort: 6379
+        resources:
+          requests:
+            cpu: 250m
+      nodeSelector:
+        cpu_usage: blue
