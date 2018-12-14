@@ -13,7 +13,7 @@ class JobEdgesController < ApplicationController
   has_scope :job, :by_workflow_uuid
 
   before  do
-    verify_auth_token
+    verify_user
   end
 
 	get '/' do

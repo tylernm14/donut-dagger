@@ -115,18 +115,21 @@ class ApplicationController < Sinatra::Base
 
   private
 
+  def verify_user
+    if auth_header?
+      verify_auth_token
+    else
+      verify_logged_in_user
+    end
+  end
+
+  def auth_header?
+    !!env['HTTP_AUTHORIZATION']
+  end
+
   # To be used by services
   def verify_auth_token
     halt 401 unless valid_user?(extracted_token)
-  end
-
-  def valid_user?(token)
-    t = Token.find_by_value(token)
-    if t
-      @current_user = t.user
-    else
-      @current_user = nil
-    end
   end
 
   def extracted_token
@@ -136,6 +139,15 @@ class ApplicationController < Sinatra::Base
       c.captures[0]
     else
       nil
+    end
+  end
+
+  def valid_user?(token)
+    t = Token.find_by_value(token)
+    if t
+      @current_user = t.user
+    else
+      @current_user = nil
     end
   end
 

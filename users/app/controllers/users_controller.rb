@@ -10,7 +10,7 @@ class UsersController < ApplicationController
   register Sinatra::HasScope
 
   before do
-    verify_auth_token
+    verify_user
   end
 
   get '/' do

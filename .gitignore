@@ -15,3 +15,5 @@ Makefile.simrender
 sim_render_job_driver.py
 test_job_efs.yml
 sim_render.yml
+kubeconfig
+coverage/

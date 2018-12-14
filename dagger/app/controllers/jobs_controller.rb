@@ -29,7 +29,7 @@ class JobsController < ApplicationController
 
   namespace '/' do
     before do
-      verify_auth_token
+      verify_user
     end
 
     post do

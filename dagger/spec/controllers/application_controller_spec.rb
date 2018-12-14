@@ -47,16 +47,16 @@ describe ApplicationController, :type => :controller do
     end
 
     it 'renders links' do
-      expect(last_response.body).to match(/href='\/results'/)
-      expect(last_response.body).to match(/href='\/local_inputs'/)
-      expect(last_response.body).to match(/href='\/workflow_envs'/)
+      expect(last_response.body).to match(/href='\/workflows'/)
+#      expect(last_response.body).to match(/href='\/local_inputs'/)
+#      expect(last_response.body).to match(/href='\/workflow_envs'/)
       expect(last_response.body).to match(/href='\/tokens'/)
       expect(last_response.body).to match(/href='\/healthcheck\/complete'/)
       expect(last_response.body).to match(/href='\/sidekiq'/)
       expect(last_response.body).to match(/href='\/logout'/)
-      expect(last_response.body).to match(/Results/)
-      expect(last_response.body).to match(/Local Inputs/)
-      expect(last_response.body).to match(/Workflow Envs/)
+      expect(last_response.body).to match(/Workflows/)
+#      expect(last_response.body).to match(/Local Inputs/)
+#      expect(last_response.body).to match(/Workflow Envs/)
       expect(last_response.body).to match(/Your API Tokens/)
       expect(last_response.body).to match(/Health Check/)
       expect(last_response.body).to match(/Sidekiq/)
@@ -72,7 +72,7 @@ describe ApplicationController, :type => :controller do
       expect(last_response.status).to eq 302
       expect(last_response).to be_redirect
       follow_redirect!
-      expect(last_request.url).to match /home/
+      expect(last_request.url).to match /workflows\/admin/
     end
   end
 end

@@ -27,7 +27,7 @@ class WorkflowsController < ApplicationController
 
     get do
       @workflows = Workflow.all
-      haml :'admin/workflows/index', locals: { workflows: @workflows }
+      haml :'admin/workflows/index', locals: { workflows: @workflows, user_token: @current_user.tokens.first.value }
     end
 
     post do
@@ -79,12 +79,13 @@ class WorkflowsController < ApplicationController
 
   namespace '/' do
     before do
-      verify_auth_token
+      verify_user
     end
 
     post do
       request.body.rewind
       request_payload = JSON.parse request.body.read
+      puts request_payload
       post_common(request_payload).to_json
     end
 

@@ -44,7 +44,7 @@
               %tr
                 %th.text-right.col-md-3.less-padding Elapsed Time:
                 %td.text-left.less-padding
-                  = distance_of_time_in_words(workflow.created_at, workflow.updated_at) if workflow.completed?
+                  = distance_of_time_in_words(workflow.created_at, workflow.updated_at, include_seconds: true) if workflow.completed?
 
     .panel.panel-default
       .panel-heading

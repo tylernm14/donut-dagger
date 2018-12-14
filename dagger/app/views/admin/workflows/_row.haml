@@ -3,7 +3,7 @@
     %a{href: "/workflows/admin/#{workflow.id}", class: "label label-work-#{workflow.status}"} #{workflow.status.upcase}
     -#%form{method: 'POST', action: "#{request.script_name}/", id: 'my-rerun-icon'}
     -#  %input{type: 'hidden', name: 'definition_name', value: workflow.definition.name }
-    %a.btn-icon.glyphicon.glyphicon-refresh{href: "/workflows/admin/new/#{workflow.id}", type: 'button'}
+    %a.btn-icon.glyphicon.glyphicon-refresh{href: "/workflows/admin", type: 'button', id: "rerun-icon-#{workflow.id}"}
     - if !workflow.completed?
       %a.btn-icon.glyphicon.glyphicon-remove-circle{href: '', type: 'button', id: "terminate-icon-#{workflow.id}"}
   %td<
@@ -19,7 +19,7 @@
   - if workflow.status == 'running' || workflow.status == 'waiting'
     %td #{ distance_of_time_in_words(workflow.created_at, Time.now) }
   - else
-    %td #{ distance_of_time_in_words(workflow.created_at, workflow.updated_at) }
+    %td #{ distance_of_time_in_words(workflow.created_at, workflow.updated_at, include_seconds: true) }
   %td.text-nowrap
     - if workflow.result_count > 0
       %a{href: "/results/admin?by_workflow_id=#{workflow.id}", class: 'btn-sm btn-primary'} Results
@@ -36,12 +36,13 @@
       type : "POST", // type of action POST || GET
       dataType : "json", // data type
       contentType: "application/json",
+      //beforeSend: function(xhr){xhr.setRequestHeader('HTTP_AUTHORIZATION', 'Token token=#{user_token}');},
       data : JSON.stringify(formdata), // post data || get data
       success : function(json) {
                       // you can see the result from the console
                       // tab of the developer tools
         console.log(json);
-        window.location.href = "/workflows/admin/" + json.id;
+        // window.location.href = "/workflows/admin/" + json.id;
       },
       error: function(xhr, resp, text) {
         console.log(xhr, resp, text);

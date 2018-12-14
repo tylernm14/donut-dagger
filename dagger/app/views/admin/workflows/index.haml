@@ -17,7 +17,7 @@
           -#      = select_tag 'by_user_uid', options_for_select(@users, @filters[:by_user_uid]), class: 'form-control input-sm'
           -#    .form-group.col-sm-5.col-md-4
           -#      = render partial: '/shared/date_selector', locals: { filters: @filters }
-      - if @workflows.count > 0
+      - if workflows.count > 0
         #workflows
           #workflows-content
             %table.table.table-hover.table-striped.table-bordered
@@ -31,12 +31,12 @@
                   %th Elapsed Time
                   %th
                 %tbody
-                  - @workflows.each do |workflow|
-                    = haml :'admin/workflows/_row', locals: { workflow: workflow }
+                  - workflows.each do |workflow|
+                    = haml :'admin/workflows/_row', locals: { workflow: workflow, user_token: user_token }
       - else
         .panel-body
           .alert.alert-warning No workflows.
-      .panel-footer #{@workflows.count} workflows found.
+      .panel-footer #{workflows.count} workflows found.
 
     -#%nav.text-center
     -#  = will_paginate @workflows, renderer: BootstrapPagination::Sinatra

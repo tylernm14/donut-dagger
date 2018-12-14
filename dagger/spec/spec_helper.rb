@@ -7,6 +7,8 @@ require 'timecop'
 require 'webmock/rspec'
 require 'dotenv'
 require_relative 'etcd_spec_helper'
+require 'warden'
+include Warden::Test::Helpers
 
 Dotenv.load
 

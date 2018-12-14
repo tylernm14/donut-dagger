@@ -53,4 +53,4 @@ spec:
   tls:
   - hosts:
     - www.dustysarcophagus.com
-    secretName: ssl-cert-dusty
+    secretName: ssl-cert-secret

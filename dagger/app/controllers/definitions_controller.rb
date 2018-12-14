@@ -10,7 +10,7 @@ class DefinitionsController < ApplicationController
   has_scope :definition, :by_name
 
   before  do
-    verify_auth_token
+    verify_user
   end
 
   post '/' do

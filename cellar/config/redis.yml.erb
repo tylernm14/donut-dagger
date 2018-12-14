@@ -12,7 +12,7 @@
 <% port = ENV['REDIS_PORT'] ||  begin
                                   `bash -c '[ -e /usr/local/bin/minikube ]'`
                                   if $? == 0
-                                    `kubectl --context=minikube get -o jsonpath={.spec.ports[0].nodePort} svc/redis-master`
+                                    `kubectl --context=minikube get -o jsonpath={.spec.ports[0].nodePort} svc/redis`
                                   elsif ENV['DOCKER_HOST'].nil?
                                     6379
                                   else
