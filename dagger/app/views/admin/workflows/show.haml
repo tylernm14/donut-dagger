@@ -9,7 +9,7 @@
           -#%a{href: "workflows/admin/new/#{workflow.id}", class: 'btn btn-warning'} Rerun
           .pull-right
             -#%a{href: "#{back}" } <span class="glyphicon glyphicon-chevron-left"></span> Back
-            %a.btn-icon.glyphicon.glyphicon-refresh{href: "/workflows/admin/new/#{workflow.id}", style: 'font-size: 1.5em;', type: 'button'}
+            %a.btn-icon.glyphicon.glyphicon-refresh{href: "/workflows/admin", style: 'font-size: 1.5em;', type: 'button', id: "rerun-icon-#{workflow.id}"}
           .panel-title Workflow
         .panel-body
           %table.table.table-hover.table-borderless.less-padding
@@ -104,7 +104,7 @@
                     - @workflow_envs.each do |we|
                       = haml :'/admin/workflows/_row_workflow_envs', locals: { workflow_env: we }
         .panel-footer
-          %button.btn.btn-info{ type: 'button', id: 'submit' } Snapshot
+          %button.btn.btn-info{ type: 'button', id: 'take_workflow_env_snapshot' } Snapshot
 
 %script{src: 'https://d3js.org/d3.v3.min.js'}
 %script{src: '/js/dagre-d3.min.js'}
@@ -246,7 +246,7 @@
 
 :javascript
 
-  $("#submit").on('click', function(){
+  $("#take_workflow_env_snapshot").on('click', function(){
     var formdata = { "workflow_uuid": "#{workflow.uuid}" };
     $.ajax({
       url: "/workflow_envs", // url where to submit the request
@@ -291,3 +291,27 @@
       }, REFRESH_INTERVAL_IN_MILLIS);
     });
 
+
+:javascript
+  $("#rerun-icon-#{workflow.id}").on('click', function(){
+    var formdata = { 'definition_name': "#{workflow.definition.name}"};
+    console.log('here')
+    $.ajax({
+      url: "/workflows", // url where to submit the request
+      type : "POST", // type of action POST || GET
+      dataType : "json", // data type
+      contentType: "application/json",
+      //beforeSend: function(xhr){xhr.setRequestHeader('HTTP_AUTHORIZATION', 'Token token=#{user_token}');},
+      data : JSON.stringify(formdata), // post data || get data
+      success : function(json) {
+                      // you can see the result from the console
+                      // tab of the developer tools
+        console.log(json);
+        // window.location.href = "/workflows/admin/" + json.id;
+      },
+      error: function(xhr, resp, text) {
+        console.log(xhr, resp, text);
+        alert("Invalid workflow definition");
+      }
+    })
+    });

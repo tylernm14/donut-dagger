@@ -19,9 +19,12 @@ class WorkflowsController < ApplicationController
   has_scope :workflow, :by_uuid
   has_scope :workflow, :by_user_oauth_id
 
+  before do
+    verify_user
+  end
+
   namespace '/admin' do
     before do
-      verify_logged_in_user
       content_type 'text/html'
     end
 
@@ -77,40 +80,36 @@ class WorkflowsController < ApplicationController
   end
 
 
-  namespace '/' do
-    before do
-      verify_user
-    end
 
-    post do
-      request.body.rewind
-      request_payload = JSON.parse request.body.read
-      puts request_payload
-      post_common(request_payload).to_json
-    end
+  # oddly can't group top level actions into namespace '/' so they are defined individually below
+  post '/' do
+    request.body.rewind
+    request_payload = JSON.parse request.body.read
+    puts request_payload
+    post_common(request_payload).to_json
+  end
 
-    get do
-      workflows = apply_scopes(:workflow, Workflow, params).
-          paginate(page: params[:page], per_page: params[:per_page])
-      headers \
-            "X-total" => workflows.total_entries.to_s,
-            "X-offset" => workflows.offset.to_s, "X-limit" => workflows.per_page.to_s
+  get '/' do
+    workflows = apply_scopes(:workflow, Workflow, params).
+        paginate(page: params[:page], per_page: params[:per_page])
+    headers \
+          "X-total" => workflows.total_entries.to_s,
+          "X-offset" => workflows.offset.to_s, "X-limit" => workflows.per_page.to_s
 
-      workflows.to_json(methods: custom_methods, include: custom_includes  )
-    end
+    workflows.to_json(methods: custom_methods, include: custom_includes  )
+  end
 
-    get ':id' do
-      wrkfl = Workflow.find(params[:id])
-      wrkfl.to_json(methods: custom_methods, include: custom_includes)
-    end
+  get '/:id' do
+    wrkfl = Workflow.find(params[:id])
+    wrkfl.to_json(methods: custom_methods, include: custom_includes)
+  end
 
-    put ':id' do
-      request.body.rewind
-      request_payload = JSON.parse request.body.read
-      workflow = Workflow.find(params[:id])
-      workflow.update!(status: request_payload.fetch('status'))
-      json workflow
-    end
+  put '/:id' do
+    request.body.rewind
+    request_payload = JSON.parse request.body.read
+    workflow = Workflow.find(params[:id])
+    workflow.update!(status: request_payload.fetch('status'))
+    json workflow
   end
 
 

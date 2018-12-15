@@ -30,7 +30,7 @@ module DateTimeHelpers
 
     case distance_in_minutes
       when 0..1
-        return (distance_in_minutes==0) ? "less than a minute #{from_now_text(distance_in_seconds)}" : "1 minute #{from_now_text(distance_in_seconds)}" unless include_seconds
+        return (distance_in_minutes==0) ? "less than a minute #{distance_in_seconds}" : "1 minute #{distance_in_seconds}" unless include_seconds
         case distance_in_seconds
           when 0..5   then "less than 5 seconds"
           when 6..10  then "less than 10 seconds"
@@ -52,13 +52,6 @@ module DateTimeHelpers
     end
   end
 
-  def from_now_text(value)
-    if value > 0
-      "from now"
-    else
-      "ago"
-    end
-  end
 end
 
 

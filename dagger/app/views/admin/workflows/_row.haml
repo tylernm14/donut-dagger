@@ -17,7 +17,7 @@
     = haml :'admin/workflows/_counts', locals: { workflow: workflow }
   %td #{distance_of_time_in_words(workflow.created_at, Time.now)} ago
   - if workflow.status == 'running' || workflow.status == 'waiting'
-    %td #{ distance_of_time_in_words(workflow.created_at, Time.now) }
+    %td #{ distance_of_time_in_words(workflow.created_at, Time.now, include_seconds: true) }
   - else
     %td #{ distance_of_time_in_words(workflow.created_at, workflow.updated_at, include_seconds: true) }
   %td.text-nowrap

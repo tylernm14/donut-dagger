@@ -44,7 +44,9 @@ class WorkflowEnvsController < ApplicationController
   end
 
   post '/' do
-    json WorkflowEnv.create!(allowed_params)
+    request.body.rewind
+    request_payload = JSON.parse request.body.read
+    json WorkflowEnv.create!(allowed_params(request_payload))
   end
 
   put '/:id' do
@@ -57,8 +59,9 @@ class WorkflowEnvsController < ApplicationController
 
   private
 
-  def allowed_params
-    params.delete_if {|k,_| !['zip_file', 'workflow_uuid', 'status'].include?(k)}
+  def allowed_params(h)
+    h.slice('zip_file', 'workflow_uuid', 'status')
+    # params.delete_if {|k,_| !['zip_file', 'workflow_uuid', 'status'].include?(k)}
   end
 
 end
