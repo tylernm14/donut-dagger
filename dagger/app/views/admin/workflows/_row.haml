@@ -15,7 +15,7 @@
     = workflow.owner.name unless workflow.owner.nil?
   %td.text<
     = haml :'admin/workflows/_counts', locals: { workflow: workflow }
-  %td #{distance_of_time_in_words(workflow.created_at, Time.now)} ago
+  %td #{distance_of_time_in_words(workflow.created_at, Time.now, include_seconds: true)} ago
   - if workflow.status == 'running' || workflow.status == 'waiting'
     %td #{ distance_of_time_in_words(workflow.created_at, Time.now, include_seconds: true) }
   - else

@@ -19,7 +19,7 @@ docker build -t kubectl:1.10.11 -f Dockerfile-kubectl .
 cd ${cellar_loc}
 docker build -t cellar:mine .
 cd ${wrapper_loc}
-docker build -t timer:mine .
+make build
 cd ${deploy_loc}
 
 kubectl label nodes minikube cpu_usage=blue
@@ -50,5 +50,4 @@ kubectl apply -f users-deploy_secret.yml
 kubectl apply -f dagger-deploy_secret.yml
 kubectl apply -f cellar-deploy_secret.yml
 
-ip=`minikube ip | tr -d '\n'`
-echo "${ip} www.dustysarcophagus.com" | sudo tee -a /etc/hosts
+ip=`minikube ip | tr -d '\n'` && echo "${ip} www.dustysarcophagus.com" | sudo tee -a /etc/hosts
