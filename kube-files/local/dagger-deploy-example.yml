@@ -87,7 +87,7 @@ spec:
         - name: ADMIN_TOKEN
           value: 
       - name: kubectl
-        image: kubectl:1.5.1
+        image: kubectl:1.10.11
         resources:
           requests:
             cpu: 20m

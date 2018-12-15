@@ -34,6 +34,7 @@ class Workflow < ActiveRecord::Base
   # Want to create job info before workflow record gets persisted
   before_validation :create_uuid, on: :create
   after_create :create_dag_jobs
+  after_commit :start_workflow_worker, on: :create
 
   Job.statuses.each do |s|
     define_method "jobs_#{s.first}_count" do
@@ -76,6 +77,9 @@ class Workflow < ActiveRecord::Base
   def create_dag_jobs
     self.reload # get uuid created by postgres
     CreateDagJobs.call(self)
+  end
+
+  def start_workflow_worker
     StartWorkflowWorker.perform_async(self.id)
   end
 

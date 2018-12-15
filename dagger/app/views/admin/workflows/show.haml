@@ -9,7 +9,7 @@
           -#%a{href: "workflows/admin/new/#{workflow.id}", class: 'btn btn-warning'} Rerun
           .pull-right
             -#%a{href: "#{back}" } <span class="glyphicon glyphicon-chevron-left"></span> Back
-            %a.btn-icon.glyphicon.glyphicon-refresh{href: "/workflows/admin", style: 'font-size: 1.5em;', type: 'button', id: "rerun-icon-#{workflow.id}"}
+            %a.btn-icon.glyphicon.glyphicon-refresh{href: "/workflows/admin/new/#{workflow.id}", style: 'font-size: 1.5em;', type: 'button'}
           .panel-title Workflow
         .panel-body
           %table.table.table-hover.table-borderless.less-padding
@@ -31,7 +31,7 @@
               %tr
                 %th.text-right.col-md-3.less-padding Status
                 %td.text-left.less-padding
-                  = @workflow.status.capitalize
+                  = workflow.status.capitalize
               %tr
                 %th.text-right.col-md-3.less-padding
                 %td.text-left.less-padding
@@ -39,7 +39,7 @@
               %tr
                 %th.text-right.col-md-3.less-padding Start Time:
                 %td.text-left.less-padding
-                  = date_time_format(@workflow.created_at)
+                  = date_time_format(workflow.created_at)
 
               %tr
                 %th.text-right.col-md-3.less-padding Elapsed Time:
@@ -83,7 +83,7 @@
           %code.language-yaml
             = preserve do
               .text-left
-                = @workflow.definition.data.to_yaml
+                = workflow.definition.data.to_yaml
 
     -#%form{method: 'POST', action: "#{request.script_name}/", id: 'form-new-env'}
     #new-env
@@ -101,7 +101,7 @@
                       %th Created on
 
                   %tbody
-                    - @workflow_envs.each do |we|
+                    - workflow_envs.each do |we|
                       = haml :'/admin/workflows/_row_workflow_envs', locals: { workflow_env: we }
         .panel-footer
           %button.btn.btn-info{ type: 'button', id: 'take_workflow_env_snapshot' } Snapshot

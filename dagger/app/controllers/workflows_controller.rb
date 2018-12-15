@@ -48,7 +48,8 @@ class WorkflowsController < ApplicationController
       haml :'admin/workflows/new', locals: { input_description: w.definition.description, placeholder_description: '',
                                              input_data: yaml_def_data, placeholder_data: nil,
                                              input_parallelism: w.parallelism, placeholder_parallelism: '',
-                                             new_uuid: @new_uuid
+                                             new_uuid: @new_uuid,
+                                             csrf_token: Rack::Protection::FormToken.token(session)
                                            }
     end
 

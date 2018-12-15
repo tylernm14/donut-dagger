@@ -3,7 +3,7 @@
     %a{href: "/workflows/admin/#{workflow.id}", class: "label label-work-#{workflow.status}"} #{workflow.status.upcase}
     -#%form{method: 'POST', action: "#{request.script_name}/", id: 'my-rerun-icon'}
     -#  %input{type: 'hidden', name: 'definition_name', value: workflow.definition.name }
-    %a.btn-icon.glyphicon.glyphicon-refresh{href: "/workflows/admin", type: 'button', id: "rerun-icon-#{workflow.id}"}
+    %a.btn-icon.glyphicon.glyphicon-refresh{href: "/workflows/admin/new/#{workflow.id}", type: 'button'}
     - if !workflow.completed?
       %a.btn-icon.glyphicon.glyphicon-remove-circle{href: '', type: 'button', id: "terminate-icon-#{workflow.id}"}
   %td<
