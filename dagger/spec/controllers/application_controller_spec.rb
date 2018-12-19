@@ -47,19 +47,19 @@ describe ApplicationController, :type => :controller do
     end
 
     it 'renders links' do
-      expect(last_response.body).to match(/href='\/workflows'/)
+      expect(last_response.body).to match(/href='\/workflows\/admin'/)
 #      expect(last_response.body).to match(/href='\/local_inputs'/)
 #      expect(last_response.body).to match(/href='\/workflow_envs'/)
       expect(last_response.body).to match(/href='\/tokens'/)
       expect(last_response.body).to match(/href='\/healthcheck\/complete'/)
-      expect(last_response.body).to match(/href='\/sidekiq'/)
+      expect(last_response.body).to match(/href='\/sidekiq\/dagger'/)
       expect(last_response.body).to match(/href='\/logout'/)
       expect(last_response.body).to match(/Workflows/)
 #      expect(last_response.body).to match(/Local Inputs/)
 #      expect(last_response.body).to match(/Workflow Envs/)
       expect(last_response.body).to match(/Your API Tokens/)
       expect(last_response.body).to match(/Health Check/)
-      expect(last_response.body).to match(/Sidekiq/)
+      expect(last_response.body).to match(/Sidekiq for Dagger/)
       expect(last_response.body).to match(/Logout/)
     end
   end

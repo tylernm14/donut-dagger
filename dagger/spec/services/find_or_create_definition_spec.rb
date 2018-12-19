@@ -43,6 +43,7 @@ RSpec.describe FindOrCreateDefinition do
     context 'with data' do
       before do
         @definition = build(:definition)
+        @definition_checksum = Digest::SHA256.hexdigest(ActiveSupport::JSON.encode(@definition.data.to_json))
         @payload = FactoryGirl.attributes_for(:workflow).merge(data: @definition.data.to_json)
         @payload.delete(:definition)
         @payload.stringify_keys!
@@ -51,7 +52,7 @@ RSpec.describe FindOrCreateDefinition do
       it 'should return a new workflow definition' do
         expect {
           wdef = FindOrCreateDefinition.call(@payload)
-          expect(wdef.name).to eq '1d010f64004b62901ea003aa483d8b09ab7dbdf53a2d08be7bdf1a2d5d1fc8f2'
+          expect(wdef.name).to eq @definition_checksum
           expect(wdef.description).to eq ''
         }.to change(Definition, :count).by 1
       end
@@ -61,6 +62,7 @@ RSpec.describe FindOrCreateDefinition do
     context 'with data and description' do
       before do
         @definition = build(:definition)
+        @definition_checksum = Digest::SHA256.hexdigest(ActiveSupport::JSON.encode(@definition.data.to_json))
         @payload = FactoryGirl.attributes_for(:workflow).merge(data: @definition.data.to_json, description: 'blast off')
         @payload.delete(:definition)
         @payload.stringify_keys!
@@ -69,7 +71,7 @@ RSpec.describe FindOrCreateDefinition do
       it 'should return a new workflow definition' do
         expect {
           wdef = FindOrCreateDefinition.call(@payload)
-          expect(wdef.name).to eq '1d010f64004b62901ea003aa483d8b09ab7dbdf53a2d08be7bdf1a2d5d1fc8f2'
+          expect(wdef.name).to eq @definition_checksum
           expect(wdef.description).to eq 'blast off'
         }.to change(Definition, :count).by 1
       end
@@ -78,7 +80,9 @@ RSpec.describe FindOrCreateDefinition do
 
     context 'with data that already exists' do
       before do
-        @definition = create(:definition, name: '1d010f64004b62901ea003aa483d8b09ab7dbdf53a2d08be7bdf1a2d5d1fc8f2')
+        example_definition = build(:definition)
+        @definition_checksum = Digest::SHA256.hexdigest(ActiveSupport::JSON.encode(example_definition.data.to_json))
+        @definition = create(:definition, name: @definition_checksum)
         @payload = FactoryGirl.attributes_for(:workflow).merge(data: @definition.data.to_json)
         @payload.delete(:definition)
         @payload.stringify_keys!
