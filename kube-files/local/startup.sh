@@ -5,7 +5,7 @@ minikube start --vm-driver hyperkit --cpus 4 --memory 8192
 users_loc=~/mysrc/donut-dagger/users
 dagger_loc=~/mysrc/donut-dagger/dagger
 cellar_loc=~/mysrc/donut-dagger/cellar
-wrapper_loc=~/mysrc/donut-dagger/wrapper/pythond
+wrapper_loc=~/mysrc/donut-dagger/wrapper/python
 
 deploy_loc=~/mysrc/donut-dagger/kube-files/local
 
