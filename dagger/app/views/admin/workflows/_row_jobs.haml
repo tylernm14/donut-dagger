@@ -14,7 +14,7 @@
   - if job.status == 'running'
     %td
       - if job.start_time
-        = distance_of_time_in_words(job.start_time.to_s.to_i, DateTime.now.to_i, include_seconds: true)
+        = distance_of_time_in_words(job.start_time, Time.now, include_seconds: true)
       - else
         ERR: No timing info
   - elsif job.end_time.nil?
@@ -23,7 +23,7 @@
   - else
     %td
       - if job.start_time && job.end_time
-        = distance_of_time_in_words(job.start_time.to_i, job.end_time.to_i, include_seconds: true)
+        = distance_of_time_in_words(job.start_time, job.end_time, include_seconds: true)
       - else
         ERR: No timing info
   %td

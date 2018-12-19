@@ -1,0 +1,7 @@
+include README.txt
+include MANIFEST.in
+include setup.py
+recursive-include streamed_job *.py
+recursive-include bin *.py
+prune *.pyc
+prune *.sw*

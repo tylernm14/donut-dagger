@@ -1,13 +1,17 @@
 #!/bin/bash
 
-minikube start --vm-driver hyperkit --cpus 4 --memory 8192
+minikube start --vm-driver hyperkit --cpus 4 --memory 8192 -v=10
+workdir=$(pwd)/../../
 
-users_loc=~/mysrc/donut-dagger/users
-dagger_loc=~/mysrc/donut-dagger/dagger
-cellar_loc=~/mysrc/donut-dagger/cellar
-wrapper_loc=~/mysrc/donut-dagger/wrapper/python
+echo "Using workdir: ${workdir}"
 
-deploy_loc=~/mysrc/donut-dagger/kube-files/local
+users_loc=${workdir}/users
+dagger_loc=${workdir}/dagger
+cellar_loc=${workdir}/cellar
+wrapper_loc=${workdir}/wrapper/python
+wrapper_py_rb_loc=${workdir}/wrapper/python-ruby
+
+deploy_loc=${workdir}/kube-files/local
 
 eval $(minikube docker-env)
 
@@ -19,6 +23,8 @@ docker build -t kubectl:1.10.11 -f Dockerfile-kubectl .
 cd ${cellar_loc}
 docker build -t cellar:mine .
 cd ${wrapper_loc}
+make build
+cd ${wrapper_py_rb_loc}
 make build
 cd ${deploy_loc}
 
