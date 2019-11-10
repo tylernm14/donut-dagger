@@ -82,7 +82,7 @@ GEM
       activesupport (>= 3.0.0)
     faraday (0.12.1)
       multipart-post (>= 1.2, < 3)
-    ffi (1.9.18)
+    ffi (1.11.1)
     formatador (0.2.5)
     friendly_numbers (0.3.0)
     guard (2.14.1)
